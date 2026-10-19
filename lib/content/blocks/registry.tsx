@@ -4,6 +4,11 @@ import { SectionHead } from '@/components/blocks/block-section-head'
 import { HeroCentered } from '@/components/blocks/block-hero-centered'
 import { WarningCard } from '@/components/blocks/block-warning-card'
 import { Faq } from '@/components/blocks/block-faq'
+import { Cards } from '@/components/blocks/block-cards'
+import { Card } from '@/components/blocks/block-card'
+import { Flow } from '@/components/blocks/block-flow'
+import { Metrics } from '@/components/blocks/block-metrics'
+import { SectionSeparator } from '@/components/blocks/block-section-separator'
 import type { Block } from './types'
 import { TEXT_SET } from '@/lib/content/text-set'
 
@@ -19,6 +24,12 @@ export const BLOCK_SET: BlockSet = {
   'block-hero-centered': HeroCentered,
   'block-warning-card': WarningCard,
   'block-faq': Faq,
+  // 540-2: главная элемента-графа — карточки, шаги, цифры, разделитель из «Блоков».
+  'block-cards': Cards,
+  'block-card': Card,
+  'block-flow': Flow,
+  'block-metrics': Metrics,
+  'block-section-separator': SectionSeparator,
 }
 
 /** Нарисовать список блоков по порядку; `keyPrefix` держит ключи уникальными между вызовами на одной странице. */

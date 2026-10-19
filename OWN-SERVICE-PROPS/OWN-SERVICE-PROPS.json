@@ -1,7 +1,7 @@
 {
-  "id": "item",
-  "name": "Fractera Item",
-  "shortDescription": "An information desk on a landing page that answers visitors by text and voice.",
+  "id": "graph",
+  "name": "Knowledge graph",
+  "shortDescription": "The node's shared knowledge graph on LightRAG: elements store what they learn as entities and links and find it again by meaning.",
   "longDescription": "",
   "accepts": "",
   "returns": "",

@@ -1,64 +1,244 @@
 {
-  "title": "Open-source AI agent framework on your own computer",
-  "description": "Day-zero infrastructure for indie hackers and AI product makers. Launch autonomous AI agents on your own computer, get your site online at once and scale services in seconds.",
-  "keywords": "",
+  "title": "The node's knowledge graph: agent memory on LightRAG",
+  "description": "The node's agents keep what they learn and find it again by meaning. Knowledge outlives the conversation, and an agent reads a short extract instead of whole files.",
+  "keywords": "knowledge graph, LightRAG, agent memory, graph RAG, Fractera node",
   "blocks": [
     {
       "kind": "block-hero-centered",
-      "pill": "AGI element",
-      "title": "If you're an indie hacker, a Web3 builder or an AI visionary — you're invited to a private party for the makers of AI corporations.",
-      "description": "Not just a site template. It quickly grows into what you need: an agent that solves your tasks, an application, or automation of your business processes. You decide. All you bring is the idea; Fractera AGI does the rest.",
+      "pill": "Knowledge graph · LightRAG",
+      "title": "Your agents stop forgetting what they learned",
+      "description": "The graph keeps the knowledge of every element of your node: what was studied, how it connects and where it came from. Any agent finds what it needs with one question instead of rereading old files and conversations.",
       "cta": {
-        "label": "Look inside",
-        "href": "#help-desk"
+        "label": "How it works",
+        "href": "#how-it-works-t"
       },
-      "bid": "j7tri"
+      "secondary": {
+        "label": "Questions and answers",
+        "href": "#faq-heading"
+      },
+      "bid": "gk001"
     },
     {
       "kind": "block-section-head",
-      "id": "what-it-can-do",
-      "title": "AI agent orchestration and autonomous deployment of Web3 applications",
-      "bid": "zy6l4"
+      "id": "pain",
+      "title": "Without a shared memory every conversation starts from zero",
+      "bid": "gk002"
     },
     {
       "kind": "text-p",
-      "text": "The AGI and web3 core installs on your computer in seconds, and your site is live on the internet at a temporary address right away. Your own domain takes a couple of minutes more. Need a server? Rent a VPS and run hundreds of sites on your own APP factory.",
-      "bid": "r9fm4"
+      "text": "An agent studied someone else's site, worked out how its cart works and explained it all to you. The conversation closed and the finding was gone. A week later another agent does the same work again, and you pay for the tokens again.",
+      "bid": "gk003"
     },
     {
-      "kind": "text-p",
-      "text": "Tell the agent your idea. It asks a few sharp questions and builds the project. Under it is the Fractera starter for Next 16: high-load architecture, sign-in, database and media storage already set up locally.",
-      "bid": "eyhxg"
-    },
-    {
-      "kind": "text-p",
-      "text": "Your knowledge graph already holds thousands of proven skills, plugins and MCP servers, chosen on the advice of leading AI developers. The agent finds the right one the moment it is needed.",
-      "bid": "g2vkq"
-    },
-    {
-      "kind": "text-p",
-      "text": "Take any ready solution and make it stronger with your own experience and craft. That makes a digital product with real value. We find buyers for it, and a smart contract guarantees every deal.",
-      "bid": "r4of5"
-    },
-    {
-      "kind": "text-p",
-      "text": "You come with an idea and tell it to your agent. It builds the product from skills and other people's expertise. Use it yourself or sell it: buyers find you through the AGI network, and you move on to the next idea.",
-      "bid": "xh0ym"
+      "kind": "block-cards",
+      "title": "What you get",
+      "cols": 2,
+      "blockKey": "gains",
+      "children": [
+        {
+          "kind": "block-card",
+          "children": [
+            {
+              "kind": "text-h3",
+              "text": "Knowledge stays"
+            },
+            {
+              "kind": "text-p",
+              "text": "What an agent finds goes into the graph and survives the end of the conversation, a restart of the node and a change of agent."
+            }
+          ]
+        },
+        {
+          "kind": "block-card",
+          "children": [
+            {
+              "kind": "text-h3",
+              "text": "Search by meaning and by links"
+            },
+            {
+              "kind": "text-p",
+              "text": "Ask in plain words: the graph finds the text that matches and everything connected to it, down to an item of your product quiz."
+            }
+          ]
+        },
+        {
+          "kind": "block-card",
+          "children": [
+            {
+              "kind": "text-h3",
+              "text": "Fewer tokens"
+            },
+            {
+              "kind": "text-p",
+              "text": "An agent gets a short extract made for its question and does not reread reports hundreds of megabytes long."
+            }
+          ]
+        },
+        {
+          "kind": "block-card",
+          "children": [
+            {
+              "kind": "text-h3",
+              "text": "One graph for the whole node"
+            },
+            {
+              "kind": "text-p",
+              "text": "What one element gathers is there for all the others at once."
+            }
+          ]
+        }
+      ],
+      "bid": "gk004"
     },
     {
       "kind": "block-section-head",
-      "id": "under-the-hood",
-      "title": "Day-zero infrastructure: a ready backend architecture for platforms",
-      "bid": "ubj4n"
+      "id": "what-is-a-graph",
+      "title": "What a knowledge graph is",
+      "bid": "gk005"
     },
     {
       "kind": "text-p",
-      "text": "A built-in database, sign-in with user roles and dozens of other solutions. All of their code is open right inside your application: fix it, improve it or remove it. It is up to you.",
-      "bid": "tr7cu"
+      "text": "Picture a map where the towns are things and the roads are the links between them. A site, its search, the request address that search uses and the item of your quiz that grew out of it are points on that map, joined by labelled lines. The graph remembers both the points and the roads between them.",
+      "bid": "gk006"
     },
     {
-      "kind": "widget-static-landing-agent",
-      "bid": "k6tkh"
+      "kind": "block-flow",
+      "title": "How it works",
+      "blockKey": "how-it-works",
+      "steps": [
+        {
+          "title": "An agent saves",
+          "text": "An element hands the graph what it learned: the things, the links between them and a short text saying where it came from."
+        },
+        {
+          "title": "The graph connects",
+          "text": "New knowledge settles next to what is already known, and the same thing found in different analyses becomes one point."
+        },
+        {
+          "title": "Any agent asks",
+          "text": "For a question in plain words the graph returns a short context: the right things, their links and the source."
+        }
+      ],
+      "bid": "gk007"
+    },
+    {
+      "kind": "block-section-head",
+      "id": "cost",
+      "title": "What it costs",
+      "bid": "gk008"
+    },
+    {
+      "kind": "block-metrics",
+      "items": [
+        {
+          "value": "0",
+          "label": "model calls to save knowledge that is already structured"
+        },
+        {
+          "value": "1",
+          "label": "embedding to find the answer to a question"
+        },
+        {
+          "value": "6,000 · 8,000",
+          "label": "tokens of things and of links in an answer, at most"
+        }
+      ],
+      "bid": "gk009"
+    },
+    {
+      "kind": "text-small",
+      "text": "Embeddings use the OpenAI key of your node. In the graph search modes a question costs one more short model call that picks out its keywords. The limits are defaults and can be changed.",
+      "bid": "gk010"
+    },
+    {
+      "kind": "block-section-head",
+      "id": "your-computer",
+      "title": "Your graph on your computer",
+      "bid": "gk011"
+    },
+    {
+      "kind": "text-p",
+      "text": "The graph runs inside the node on your computer, and its data sits in the node's folder. Elements read it and add to it through the element's doors with the node's key. When you need to, you can connect your own tools to the same doors.",
+      "bid": "gk012"
+    },
+    {
+      "kind": "block-cards",
+      "title": "Where the graph helps",
+      "cols": 3,
+      "blockKey": "uses",
+      "children": [
+        {
+          "kind": "block-card",
+          "children": [
+            {
+              "kind": "text-h3",
+              "text": "Studying other products"
+            },
+            {
+              "kind": "text-p",
+              "text": "An agent works out how a feature of someone else's site is built and writes into the graph the site, the feature, the requests behind it and the quiz item that grew out of it. The finding does not vanish with the conversation."
+            }
+          ]
+        },
+        {
+          "kind": "block-card",
+          "children": [
+            {
+              "kind": "text-h3",
+              "text": "Large collections of knowledge"
+            },
+            {
+              "kind": "text-p",
+              "text": "Collections of skills, MCP servers and any set where it matters not only what is in it but how one thing relates to another. The graph keeps them in order and finds what you need by meaning."
+            }
+          ]
+        },
+        {
+          "kind": "block-card",
+          "children": [
+            {
+              "kind": "text-h3",
+              "text": "The memory of all the node's agents"
+            },
+            {
+              "kind": "text-p",
+              "text": "Everything that happened in the agents' lives in one place: what happened and when, which element, node and partner it involves, which event was the cause and which the effect. Together it gives the whole picture of your project."
+            }
+          ]
+        }
+      ],
+      "bid": "gk013"
+    },
+    {
+      "kind": "block-section-separator",
+      "bid": "gk014"
+    },
+    {
+      "kind": "block-faq",
+      "title": "Questions and answers",
+      "items": [
+        {
+          "q": "Do I need to install anything?",
+          "a": "No. The element installs Python and LightRAG into its own folder, and nothing goes into the system."
+        },
+        {
+          "q": "Where is the data kept?",
+          "a": "In the node's folder on your computer. The graph lives in the memory of its process, and the files on disk are its copy."
+        },
+        {
+          "q": "Can I connect to the graph from outside?",
+          "a": "Yes. Today the node's elements use the graph through its doors with the node's key. You can connect your own tools to the same doors."
+        },
+        {
+          "q": "What is LightRAG?",
+          "a": "An open-source library for search over a knowledge graph, from the LightRAG Team under the MIT license. The node's graph is built on it."
+        },
+        {
+          "q": "What if the graph gets very large?",
+          "a": "The built-in storage is enough for the knowledge of one node. A graph of millions of things needs a database server, and this element does not set one up."
+        }
+      ],
+      "bid": "gk015"
     }
   ],
   "landing": {

@@ -21,6 +21,13 @@ export type Block = Addressed & (
   | { kind: 'block-section-head'; id: string; title: string; badge?: string }
   | { kind: 'block-hero-centered'; pill?: string; title: string; description: string; cta?: Link; secondary?: Link }
   | { kind: 'block-warning-card'; title: string; text: string }
+  // 540-2: контейнеры получают вложенные блоки в `children` (фабрика `page-body`).
+  | { kind: 'block-cards'; title: string; badge?: string; note?: string; cols?: 2 | 3; blockKey?: string; children: Block[] }
+  | { kind: 'block-card'; tone?: string; children: Block[] }
+  | { kind: 'block-flow'; title: string; badge?: string; note?: string; blockKey?: string; steps: [{ title: string; text: string }, { title: string; text: string }, { title: string; text: string }] }
+  | { kind: 'block-metrics'; items: { value: string; label: string }[] }
+  | { kind: 'block-section-separator' }
+  | { kind: 'block-faq'; title: string; items: FaqPair[] }
   // 423: типографика элемента (`lib/content/text-set.tsx`) — третий вид рядом с блоками и виджетами.
   | { kind: 'text-h2' | 'text-h3' | 'text-h4'; text: string; id?: string }
   | { kind: 'text-p' | 'text-lead' | 'text-small' | 'text-code'; text: string }

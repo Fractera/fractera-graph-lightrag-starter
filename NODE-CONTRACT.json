@@ -3,7 +3,7 @@
   "kind": "microservice",
   "entry": "global",
   "port": {
-    "desired": 24690,
+    "desired": 24689,
     "note": "A wish, not a decision. The node assigns the actual port from the block 24680-25679. Ask the node, never remember."
   },
   "env": {
