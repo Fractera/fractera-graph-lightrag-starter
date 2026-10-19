@@ -124,30 +124,30 @@
     {
       "kind": "block-section-head",
       "id": "cost",
-      "title": "What it costs",
+      "title": "Where the tokens go",
       "bid": "gk008"
     },
     {
       "kind": "block-metrics",
       "items": [
         {
-          "value": "0",
-          "label": "model calls to save knowledge that is already structured"
+          "value": "Once",
+          "label": "you pay in tokens: when knowledge is turned into things and links"
         },
         {
-          "value": "1",
-          "label": "embedding to find the answer to a question"
+          "value": "0",
+          "label": "language model calls when reading: the agent gets a ready context"
         },
         {
           "value": "6,000 · 8,000",
-          "label": "tokens of things and of links in an answer, at most"
+          "label": "tokens of context on things and on links reach the agent, at most"
         }
       ],
       "bid": "gk009"
     },
     {
       "kind": "text-small",
-      "text": "Embeddings use the OpenAI key of your node. In the graph search modes a question costs one more short model call that picks out its keywords. The limits are defaults and can be changed.",
+      "text": "Only building costs much: a model reads the material and picks out the things and the links between them. Either LightRAG does it when it writes a document, or the element agent that has already studied the material hands the graph ready links. Reading is almost free: the question becomes an embedding, and the graph finds the nearest things and links and returns a short context without calling a language model. The agent passes the keywords for the graph search itself. You pay once to build and read many times for next to nothing.",
       "bid": "gk010"
     },
     {
@@ -208,10 +208,6 @@
         }
       ],
       "bid": "gk013"
-    },
-    {
-      "kind": "block-section-separator",
-      "bid": "gk014"
     },
     {
       "kind": "block-faq",
