@@ -8,6 +8,23 @@ separate step (owner 2026-10-21: «Элемент графа сейчас, Light
 
 ---
 
+## In the Fractera project
+
+The node's knowledge graph on LightRAG: elements store what they learn and ask it later. The LightRAG server itself is a separate program.
+
+You can change it. The code is open under the MIT license and the copy on your node is yours. The node installs this element from
+this repository by the tag written in `WEB4-ITEMS-REGISTRY/web4-items.json` of the core; the core does not let you delete a built-in
+element or move its address.
+
+To change it, open it in the core (left menu, Native items, Graph), go to Build and tell its agent in the terminal what you need.
+The agent edits the element folder `WEB4-ITEMS/core/graph` and commits.
+
+The change goes live when you press Deploy in Build, Deployments: the element is rebuilt beside the running one and switched over in
+seconds. Other elements call its doors by address, request and answer, so a change to a door breaks every element that uses it;
+that is a decision for the node owner, while a change inside the element is ordinary work. To keep your version when the node is
+reinstalled, save the element to your own GitHub repository in Build, GitHub. A newer Fractera version arrives through Update, which
+merges it with your commits, and the element's agent resolves a conflict.
+
 # fractera-native-item-starter
 
 The reference starter template of a Fractera native element. Native elements are the root elements of a node: they stand on
