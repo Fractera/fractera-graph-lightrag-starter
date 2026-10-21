@@ -1,15 +1,23 @@
-# fractera-graph-lightrag-starter
+# Fractera Graph — the knowledge graph of the node
 
-The graph element of a Fractera node: a LightRAG knowledge graph for the node's elements. It is a service element, one of the
-native elements that work for the node itself instead of showing a site to visitors.
+The node's shared knowledge graph on LightRAG: elements store what they learn and ask it later. Since **v1.0.0** (node step 549-4)
+this element is built on the Fractera native element template (before: a copy of the custom element roman). Its own content is the
+home page approved by the owner on 2026-10-19 (`app/[lang]/(publicLayer)/_data/`, 14 blocks in en and ru) and the blocks it needs —
+`block-cards`, `block-card`, `block-flow`, `block-metrics`, `block-section-separator` (from the node blocks). The LightRAG server itself is a
+separate step (owner 2026-10-21: «Элемент графа сейчас, LightRAG — отдельно»).
 
-Its first version, `v0.1.0`, is the standard service element: a copy of the standard custom element (roman, the reference behind
-`fractera-item-starter`) with its own history. It keeps every function of the custom element for now; the ones a service element
-does not need will be removed in a later step. The passport, the site settings and the development documents are the seed versions
-of `fractera-item-starter`, not roman's own. The versions after it add the graph.
+---
 
-A service element is a **replaceable element**, like the node's auth and data elements: its own repository, its own port, a pinned
-tag in the node's `WEB4-ITEMS-REGISTRY/web4-items.json`. The node's core is not touched when one element replaces another.
+# fractera-native-item-starter
+
+The reference starter template of a Fractera native element. Native elements are the root elements of a node: they stand on
+every node, they come only from the Fractera repository, and they are never sold and never join an outside network. They serve
+the person and the other elements of their own node. Custom elements are born from `fractera-custom-item-starter` by the node's
+button «Create WEB4 ITEM»; native ones are added from here.
+
+The template is the custom reference template without the network parts: no showcase or Nostr fields in the passport
+(`visibility: node`, `messengers: { h2a: true, h2h: false, a2a: false }`), no messenger between people, no work for outside agents
+and no order summaries. The home page shows one line, «Reference native template», and the yellow starter sign.
 
 ## The contract a replacement must keep
 
@@ -26,7 +34,7 @@ A repository that does not keep this contract is refused; the node does not bend
 ```
 npm install
 npm run build
-PORT=24689 node .next/standalone/server.js
+PORT=24683 node .next/standalone/server.js
 ```
 
 License: MIT.

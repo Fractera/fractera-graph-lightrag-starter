@@ -2,11 +2,11 @@
 
 A branch of the element's frame (node step 314-2). Lock of the branch: none — the branch is public and indexed.
 
-## The home page is a landing (node step 330-4)
+## The home page (node step 542)
 
-The sequence of `_data/<lang>.json` holds the widget `widget-static-landing-agent`, and `_data/meta.json` → `"bare": true`
-draws it alone, without the page frame (`_widgets/static/widget-static-landing-agent/`). The other items and the field
-`landing` stay its words and the text twin for agents. Remove `bare` and the widget to go back to a page of blocks and text.
+The sequence of `_data/<lang>.json` holds the widget `widget-static-reference-title` — one line in the centre of the screen,
+the page's own `title` — and `_data/meta.json` → `"bare": true` draws it alone, without the page frame. Replace the widget and the
+words to build your own home page.
 
 ## What is here
 
@@ -28,7 +28,7 @@ This element is built on Next 16.2 and grows only inside its frame (`CLAUDE.md`,
 code only at its root: `layout.tsx` + `page.tsx`, and one `[slug]/page.tsx` that draws every child. **A new page is a
 folder of data in `_pages/`, never a new `page.tsx`** — the build grows with the number of route files, not pages
 (measured: 300 page files 1252 s, the same pages through one template 98 s). `scripts/check-routes.mjs` fails the build
-on any route file outside its closed list. Skill: `.claude/skills/use-page-tree`.
+on any route file outside its closed list. Skill: `.claude/skills/build-skills/skills/use-page-tree`.
 
 Pages are static: the build draws only the roots; a child is drawn on its first visit and refreshed every five minutes
 (`revalidate = 300`). Texts are JSON read at run time (`lib/page-tree.ts`, `ELEMENT_DIR`): a corrected paragraph shows

@@ -113,7 +113,7 @@ async function calledBy(id: string): Promise<string[]> {
   }
 }
 
-type Row = { id: string; custom: boolean; service: string; title: string | null; description: string | null; link: string | null; status: string }
+type Row = { id: string; custom: boolean; service: string; title: string | null; description: string | null; link: string | null; status: string; role?: string | null }
 
 /** The node's composition as the core sees it (Dashboard → Projects), for this element's own agent. */
 async function project(core: string | null, zone: string): Promise<Record<string, unknown>> {
@@ -128,6 +128,8 @@ async function project(core: string | null, zone: string): Promise<Record<string
         name: x.service,
         kind: x.custom ? "custom" : "native",
         description: x.description ?? x.title ?? "",
+        // 548-10: the role the node gives this element in one sentence (the core's roles) — what it does for the others.
+        role: x.role ?? null,
         url: x.link ?? "",
         status: x.status,
       }))
@@ -137,8 +139,8 @@ async function project(core: string | null, zone: string): Promise<Record<string
     domain: zone,
     core: core ?? "",
     elements,
-    // Владелец 2026-10-06: как работать с соседом, паспорт не объясняет — сосед находится и договаривается по A2A.
-    cooperation: "A2A: find an element in the core's registry, then talk to it directly (skill a2a-conversation); together agree on the API you need, then use it.",
+    // Владелец 2026-10-06: как работать с соседом, паспорт не объясняет — сосед находится в реестре ядра, а об API договариваются по i2i.
+    cooperation: "i2i: the connectors with the core, auth, data, config and design are built — use them in code; for a new need find the element in the core's registry, agree an API with its agent (npm run a2a), then call that API with no model.",
     a2aRegistry: core ? `${core}/api/node/a2a` : "",
   }
 }
@@ -199,7 +201,7 @@ async function nodeState(core: string | null): Promise<NodeState | null> {
 export async function GET(req: NextRequest) {
   if (hiddenFrom(req.headers)) return NextResponse.json({ error: "not-found" }, { status: 404 })
   const root = elementRoot()
-  const own = readJson<Record<string, unknown> & { id?: string; marketplace?: Record<string, unknown>; nostr?: Record<string, unknown> }>(
+  const own = readJson<Record<string, unknown> & { id?: string }>(
     join(/*turbopackIgnore: true*/ root, "OWN-SERVICE-PROPS", "OWN-SERVICE-PROPS.json"),
   )
   if (!own?.id) return NextResponse.json({ error: "unreadable" }, { status: 500 })
@@ -210,7 +212,7 @@ export async function GET(req: NextRequest) {
   const ip = process.env.SERVER_IP?.trim() ?? ""
   const port = process.env.PORT?.trim()
   const where = addresses(own.id)
-  const { calls, id, name, shortDescription, longDescription, accepts, returns, designSkill, isFracteraArchitecture, framework, marketplace, nostr, visibility } = own
+  const { calls, id, name, shortDescription, longDescription, accepts, returns, designSkill, isFracteraArchitecture, framework, elementType, visibility } = own
   const proj = node ? await project(coreUrl(), zone) : null
   const state = await nodeState(coreUrl())
   // calledBy — only real elements of the node: test probes and unknown callers of the log are not ties.
@@ -231,11 +233,10 @@ export async function GET(req: NextRequest) {
     isFracteraArchitecture: isFracteraArchitecture === true,
     // The framework inside (`next`, `react`, `express` …): an agent decides whether this element fits its project.
     framework: typeof framework === "string" ? framework : "",
+    // 544 (owner 2026-10-19): native — a root element of every node, only from the Fractera repository; custom — born by «Create WEB4 ITEM».
+    elementType: elementType === "native" ? "native" : "custom",
     skills: skills(root),
     tools: tools(root),
-    marketplace: { ...(marketplace ?? {}), rating: "" },
-    // An empty Nostr description means «the short description» — one text, not two copies.
-    nostr: { ...(nostr ?? {}), description: String(nostr?.description || shortDescription || "") },
     visibility,
     addresses: { internet: where.url, ownDomain: where.ownDomain, project: where.project, routes: await routes(port) },
     // Where it runs — the core's node-state indicator, each value with its source (declared by the person / measured):

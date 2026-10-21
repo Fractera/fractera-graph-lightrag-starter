@@ -3,7 +3,7 @@
 // ✗ Измерено на узле (шаг 298): 300 страниц отдельными `page.tsx` собирались 1252 с, те же 300 страниц одним шаблоном —
 // 98 с. Каждый файл маршрута Next компилирует отдельно, и сборка растёт от ЧИСЛА ФАЙЛОВ, а не страниц. Поэтому у ветки в
 // коде только корень (`layout.tsx`, `page.tsx`) и один ребёнок `[slug]/page.tsx`; новая страница — это ПАПКА ДАННЫХ
-// `<ветка>/_pages/<slug>/` (`meta.json` + `<язык>.json`), а не новый файл маршрута (навык `.claude/skills/use-page-tree`).
+// `<ветка>/_pages/<slug>/` (`meta.json` + `<язык>.json`), а не новый файл маршрута (навык `.claude/skills/build-skills/skills/use-page-tree`).
 //
 // Файл вне списка — отказ сборки. Новая ВЕТКА (новый корень) — решение человека: строка сюда вместе с причиной.
 // 🛑 Папка `pages/` в корне — Pages Router Next: любая папка там стала бы маршрутом. Запрещена.
@@ -33,14 +33,6 @@ const ALLOWED = new Map([
   ['app/[lang]/(publicLayer)/index.md/route.ts', 'главная для агентов (markdown)'],
   ['app/[lang]/(publicLayer)/[slug]/page.tsx', 'РЕБЁНОК публичной ветки — все страницы _pages/'],
   ['app/[lang]/(publicLayer)/[slug]/index.md/route.ts', 'markdown-двойник любого ребёнка публичной ветки'],
-  // ветка «reviews» (шаг узла 518-2; владелец 2026-10-17: «раздел отзывы добавили к стартовому шаблоны нашего маршрута в публичный слой»,
-  // «каждый новый отзыв должен создаваться без нового развёртывания … быть статическим»): страницы — строки слоя данных, не папки _pages/
-  ['app/[lang]/(publicLayer)/reviews/page.tsx', 'КОРЕНЬ ветки reviews: список страниц отзывов элемента'],
-  ['app/[lang]/(publicLayer)/reviews/index.md/route.ts', 'список страниц отзывов для агентов (markdown)'],
-  ['app/[lang]/(publicLayer)/reviews/snippet.png/route.ts', 'сниппет списка отзывов'],
-  ['app/[lang]/(publicLayer)/reviews/[slug]/page.tsx', 'РЕБЁНОК ветки reviews: одна страница отзыва из слоя данных, рисуется при первом заходе'],
-  ['app/[lang]/(publicLayer)/reviews/[slug]/index.md/route.ts', 'страница отзыва для агентов (markdown)'],
-  ['app/[lang]/(publicLayer)/reviews/[slug]/snippet.png/route.ts', 'сниппет страницы отзыва'],
   // сниппеты страниц (шаг узла 458-3; владелец 2026-10-12: «Картинка рядом со страницей»): PNG при первом запросе, без пересборки
   ['app/[lang]/(publicLayer)/snippet.png/route.ts', 'сниппет главной'],
   ['app/[lang]/(publicLayer)/[slug]/snippet.png/route.ts', 'сниппет любого ребёнка публичной ветки'],
@@ -62,10 +54,6 @@ const ALLOWED = new Map([
   ['app/[lang]/(protectedLayer)/admin/layout.tsx', 'замок ветки admin'],
   ['app/[lang]/(protectedLayer)/admin/page.tsx', 'КОРЕНЬ ветки admin'],
   ['app/[lang]/(protectedLayer)/admin/[...slug]/page.tsx', 'РЕБЁНОК ветки admin: страница и страница в папке роли (402)'],
-  // ветка «messenger-h2h» (шаг узла 459, владелец 2026-10-12: «H2H Messenger – H2A Messenger … только при входе архитектора»)
-  ['app/[lang]/(protectedLayer)/messenger-h2h/layout.tsx', 'замок ветки messenger-h2h: только архитектор'],
-  ['app/[lang]/(protectedLayer)/messenger-h2h/page.tsx', 'КОРЕНЬ ветки messenger-h2h: список бесед'],
-  ['app/[lang]/(protectedLayer)/messenger-h2h/[...slug]/page.tsx', 'РЕБЁНОК ветки messenger-h2h: одна беседа, динамический маршрут'],
   // ветка «messenger-h2a» (шаг узла 459, владелец 2026-10-12: «H2H Messenger – H2A Messenger … только при входе архитектора»)
   ['app/[lang]/(protectedLayer)/messenger-h2a/layout.tsx', 'замок ветки messenger-h2a: только архитектор'],
   ['app/[lang]/(protectedLayer)/messenger-h2a/page.tsx', 'КОРЕНЬ ветки messenger-h2a: список бесед'],
@@ -79,9 +67,7 @@ const ALLOWED = new Map([
   ['app/api/tools/tool-voice-input/route.ts', 'дверь инструмента tool-voice-input: расшифровка речи (узел, шаг 421; владелец 2026-10-07: «get all from fractera-next-starter»)'],
   ['app/api/tools/tool-socials-ai/route.ts', 'дверь инструмента tool-socials-ai: соцсеть по описанию (узел, шаг 421)'],
   ['app/api/health/route.ts', 'жив ли элемент — для сторожа узла'],
-  ['app/[lang]/(publicLayer)/api/help-desk/route.ts', 'дверь виджета widget-static-landing-agent: чат справочного бюро (узел, шаги 349, 422 — дверь в своей ветке)'],
   ['app/api/task-report/route.ts', 'отчёт о задаче для окна предпросмотра (узел, шаг 356-2)'],
-  ['app/[lang]/(publicLayer)/api/help-desk/voice/route.ts', 'голос справочного бюро: расшифровка до 20 с (узел, шаги 350, 422)'],
   ['app/api/i18n/translate/route.ts', 'перевод строк'],
   ['app/api/auth/callback/route.ts', 'возврат из центра единого входа (328-3)'],
   ['app/api/auth/guest-leave/route.ts', 'гость удаляет свою запись и уходит (331-2)'],
@@ -94,7 +80,6 @@ const ALLOWED = new Map([
   ['app/api/media/upload/route.ts', 'загрузка медиа'],
   ['app/api/menu/[lang]/route.ts', 'меню проекта'],
   ['app/api/revalidate/route.ts', 'перерисовать страницы'],
-  ['app/api/reviews/route.ts', 'запись страницы отзыва агентом элемента в слой данных с перерисовкой (шаг узла 518-1; владелец 2026-10-17: «каждый новый отзыв должен создаваться без нового развёртывания»)'],
   ['app/[lang]/(protectedLayer)/admin/api/settings/app/route.ts', 'дверь виджета widget-dynamic-site-settings: свои настройки элемента (324-8, 422 — дверь в своей ветке)'],
   ['app/api/settings/changed/route.ts', 'сигнал CONFIG и «Дизайна»'],
   ['app/api/settings/design/route.ts', 'дверь дизайна элемента'],
@@ -115,18 +100,12 @@ walk(join(ROOT, 'app'))
 
 const extra = found.filter((f) => !ALLOWED.has(f))
 const pagesRouter = existsSync(join(ROOT, 'pages'))
-// 518-2: папка данных с именем ветки столкнулась бы со статическим сегментом `reviews/` — страница-папка молча пропала бы за веткой.
-const branchClash = existsSync(join(ROOT, 'app', '[lang]', '(publicLayer)', '_pages', 'reviews'))
-if (branchClash) {
-  console.error('===ROUTES_FAILED=== app/[lang]/(publicLayer)/_pages/reviews — имя занято веткой reviews/ (страницы отзывов — строки слоя данных, шаг 518)')
-  process.exit(1)
-}
 if (extra.length || pagesRouter) {
   console.error('===ROUTES_FAILED=== файл маршрута вне закрытого списка:')
   for (const f of extra) console.error(`  ${f}`)
   if (pagesRouter) console.error('  pages/ — это Pages Router Next, папка запрещена')
   console.error('Новая страница = папка <ветка>/_pages/<slug>/ (meta.json + <язык>.json), а не page.tsx.')
-  console.error('Навык: .claude/skills/use-page-tree. Новая ветка — решение человека: строка в ALLOWED этого файла, с причиной.')
+  console.error('Навык: .claude/skills/build-skills/skills/use-page-tree. Новая ветка — решение человека: строка в ALLOWED этого файла, с причиной.')
   process.exit(1)
 }
 // ОБЯЗАТЕЛЬНЫЕ ПАПКИ ВЕТКИ (владелец 2026-10-07: «мы их совершенно забыли указать … проверь чтобы они существовали в проекте для
@@ -138,7 +117,7 @@ const noFolder = branchRoots.flatMap((b) => REQUIRED_FOLDERS.filter((d) => !exis
 if (noFolder.length) {
   console.error('===ROUTES_FAILED=== у ветки нет обязательной папки или её README.md:')
   for (const f of noFolder) console.error(`  ${f}`)
-  console.error('Каждая ветка: _components/ (свои компоненты), _libs/ (своя логика), _widgets/ (свои виджеты) — см. CLAUDE.md, «Tree».')
+  console.error('Каждая ветка: _components/ (свои компоненты), _libs/ (своя логика), _widgets/ (свои виджеты) — см. `.claude/modes/build.md`, «Tree».')
   process.exit(1)
 }
 const missing = [...ALLOWED.keys()].filter((f) => !found.includes(f))

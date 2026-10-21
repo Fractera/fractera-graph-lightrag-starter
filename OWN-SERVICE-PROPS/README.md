@@ -6,7 +6,6 @@ This JSON is how the element is **found and understood from outside its folder**
 
 - the node core indexes it (the node's registry of its elements);
 - anyone can ask for it with one request: `GET /api/own-service-props` — no key;
-- later it is meant to be published to Nostr as the element's searchable description.
 
 ## Only the working nature
 
@@ -32,9 +31,7 @@ No private data: the file is public. A key is never here, not even its variable 
 |---|---|
 | `OWN-SERVICE-PROPS.json` | what only the agent or the person knows |
 | `A2A-CARD.json` | the Google A2A card body — skills, examples, the node extension; its name, description and version come from this passport when it is served (`/.well-known/agent-card.json`), never a second copy |
-| `A2A-OFFERS.json` | optional, not in a newly born element — the showcase of the core's «Links (A2A) → A2A» page: what the element offers, at what price, to whom, with what limit. Today an EXAMPLE (`"example": true`, step 435-4) to agree the shape; never part of the A2A card, nothing in it is callable. `access`: `registered` · `everyone`; `limit`: `null` = no limit or `{count, per: "day" \| "hour"}`; `price.unit`: `request` · `message` |
-| `SUBSCRIPTIONS.json` | the outside paid services the element uses, shown on the core's «Process → Subscriptions» tab: description, the keys it needs (environment variable NAMES, never values), the check door, the payment history. Today an EXAMPLE (`"example": true`, step 463 — «Exa»); one page per service in the core: `/process/subscriptions/<id>`; never part of the A2A card. Skill `connect-external-service` |
-| `CRON.json` | what the element CAN run on a schedule (step 465): the catalog of `events` (code: `lib/cron/events/`; built-in `telegram-message` sends an entry's own text) and `seed`, what a new element starts with: one automatic Telegram message 24 hours after its first start («have a good mood», `afterHours: 24`, step 465-5). The person's schedule is NOT here — it is data, `data/cron.json` outside git (465-4): a reminder is an entry there, no code, no commit, no rebuild. The server checks it once a minute (`lib/cron/runner.ts`), runs go to `data/cron-runs.jsonl`; the core draws both as the calendar under «Process → Cron automations». Never part of the A2A card. Skill `schedule-cron-automations-calendar-reminders-recurring-and-one-time-tasks` |
+| — | a native element keeps no showcase, no subscriptions and no schedule: it has no working process (node step 551-1, owner of the node 2026-10-20) |
 | `README.md` | this page: why the file exists and the rule for a field |
 | `server.ts` | the door: the file + fields computed at the moment of the request; `app/api/own-service-props/route.ts` only re-exports it |
 
@@ -51,22 +48,25 @@ No private data: the file is public. A key is never here, not even its variable 
 | `designSkill` | agent (skill `custom-design`) | the design skill this element is built with (`impeccable`, `design-taste-frontend`, …), `""` when none — always present; the core takes it into its registry (owner 2026-10-07) |
 | `isFracteraArchitecture` | birth (template), then agent | `true` when the element is built on the Fractera architecture (born from a Fractera starter), `false` for a custom template or a plain React/Express app — an agent knows which contracts (page tree, blocks, design, A2A doors) it can rely on (owner 2026-10-07) |
 | `framework` | birth (template), then agent | the framework inside: `next`, `react`, `express`, … — an agent decides whether to connect this element to its project (owner 2026-10-07) |
+| `elementType` | template | which template the element comes from: `native` — a root element of every node, added only from the Fractera repository (`fractera-native-item-starter`), never sold; `custom` — born by the node's button «Create WEB4 ITEM» from `fractera-custom-item-starter` |
 | `visibility` | person | `network` — seen outside the node; `node` — through the tunnel it answers as absent |
 | `calls` | template, then agent | elements this element cooperates with — node-private, returned only with the node key (see «Where `calls` comes from») |
 | `messengers` | template, then person | which ways of talking the element has, true or false: `h2a` (the person and this agent), `h2h` (people through their agents), `a2a` (agents); the core shows the H2A / H2H sections and the new A2A pages by these flags and takes them into its registry (owner 2026-10-13, step 472) |
-| `marketplace` | person | `listed`, `price`, `currency` — empty strings while not for sale |
-| `nostr` | agent | `tags` for search; `description` empty = the short description (one text, not two copies) |
 
 ## Where `calls` comes from
 
 - **Born with four.** `auth`, `data`, `config`, `design` are there because the element template was built to cooperate with
   these four services of the node from its first start: sign-in, stored data, project settings, design. They are the template's
   decision, not something this element found.
-- **Every later entry has one origin: A2A.** An entry is added only when the agent found a suitable element through A2A discovery
-  and the cooperation actually started — the first conversation in which the other side agreed to do the work (skill
-  `a2a-conversation`). The agent adds the other element's `id` in the same commit as the work that the cooperation produced.
+- **Every later entry has one origin: an i2i agreement.** An entry is added only when the agent found a suitable element in the
+  node and the two agreed an API — the conversation in which the other side agreed to build and serve it (skill `use-i2i`;
+  commands — `a2a-conversation`). The agent adds the other element's `id` in the same commit as the work that the cooperation produced.
 - **Not added:** an element that was only looked at, asked once without an agreement, or refused.
 - **Removed:** when the element stops using that partner — in the same commit that removes the use.
+
+**The link itself lives in the card** `A2A-CARD.json`, extension `consumes`: `skill`, `from`, `why`, `protocol` (`i2i` | `a2a`) and
+`via` — the API (`{ kind: "http", method, path, base, key }`, `{ kind: "mcp", tool, path, base, key }` or `{ kind: "a2a-skill", skill }`).
+`npm run passport -- me` prints these links first; `npm run check:a2a-card` refuses a link without its protocol and API.
 
 `calledBy` is the other direction and is never written: the door reads it from the node's A2A log.
 
@@ -79,7 +79,6 @@ values the core shows on its node-state indicator and its «Dashboard → Projec
 |---|---|---|
 | `skills` | `.claude/skills/*/SKILL.md` whose description starts with «Work skill» — only this element's own working skills | open |
 | `tools` | `_tools/TOOLS.json` (generated from `_tools/tool-*/tool.json`) — names only, no descriptions: an agent choosing between elements sees how rich each one's tools are | open |
-| `marketplace.rating` | none yet → `""` | open |
 | `addresses.internet` | own domain, else `<address>.<zone>` | open |
 | `addresses.ownDomain` | `SERVICE_DATA_DIR/domain.json`, else `""` | open |
 | `addresses.project` | the node's zone (`NODE_DOMAIN_FILE`) | open |
@@ -97,15 +96,15 @@ values the core shows on its node-state indicator and its «Dashboard → Projec
 | `machine` | `port`, `localUrl`, `folder`, `status` — the element on this machine | only with the node key |
 | `calls` | the file (see above) | only with the node key |
 | `calledBy` | the core's A2A log — real elements of the node only, names | only with the node key |
-| `project` | the core's composition of the node: `domain`, `core`, `elements` (id, name, native/custom, short description, url, status), `cooperation` (A2A), `a2aRegistry` | only with the node key |
+| `project` | the core's composition of the node: `domain`, `core`, `elements` (id, name, native/custom, short description, url, status), `cooperation` (i2i), `a2aRegistry` | only with the node key |
 
 The node key is the header `X-Node-Key` (`SETTINGS_SECRET` of the node). The core asks with it; a stranger gets the open part.
 
 ## How the element's own agent reads it
 
 `npm run passport` — asks the running door on this machine with the node key from `.env.local` and prints the whole passport.
-The agent learns itself from it (skill `own-service-props-detection`) and the node around it (skill `node-elements-detection`):
-how to work with another element is never written here — it is found and agreed over A2A.
+The agent learns itself from it (skill `own-service-props-detection`; the block `node` says where it lives) and finds a neighbour by need (skill `node-elements-detection`):
+how to work with another element is agreed over i2i (skill `use-i2i`) and the agreed API is written in the card `consumes`.
 
 ## How the texts are written
 

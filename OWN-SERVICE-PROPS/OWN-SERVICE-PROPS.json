@@ -8,7 +8,8 @@
   "designSkill": "impeccable",
   "isFracteraArchitecture": true,
   "framework": "next",
-  "visibility": "network",
+  "elementType": "native",
+  "visibility": "node",
   "calls": [
     "auth",
     "data",
@@ -17,16 +18,7 @@
   ],
   "messengers": {
     "h2a": true,
-    "h2h": true,
-    "a2a": true
-  },
-  "marketplace": {
-    "listed": false,
-    "price": "",
-    "currency": ""
-  },
-  "nostr": {
-    "tags": [],
-    "description": ""
+    "h2h": false,
+    "a2a": false
   }
 }

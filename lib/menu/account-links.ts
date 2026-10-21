@@ -41,9 +41,8 @@ function usersLink(lang: string): DrawerLink[] {
 }
 
 // 459 (владелец 2026-10-12): «H2H Messenger – H2A Messenger … установи их выше чем кнопки группа страниц … доступны только при
-// входе архитектора». Названия одинаковы на всех языках; ведут на защищённые ветки messenger-h2h и messenger-h2a.
+// входе архитектора». Названия одинаковы на всех языках; ведёт на защищённую ветку messenger-h2a (у нативного элемента H2H нет, шаг 544).
 const MESSENGERS = [
-  { href: "/messenger-h2h", label: "H2H Messenger" },
   { href: "/messenger-h2a", label: "H2A Messenger" },
 ]
 

@@ -3,7 +3,7 @@ import { MessengerShell } from './messenger-shell.client'
 import { messengerUi, type MessengerKind } from './messenger.i18n'
 import { PageShell } from '@/components/content-page/page-shell'
 
-// МАРШРУТ ОДНОЙ БЕСЕДЫ мессенджера H2H / H2A (шаг узла 459): `/<lang>/messenger-<kind>/<беседа>`. Общий для обеих веток —
+// МАРШРУТ ОДНОЙ БЕСЕДЫ мессенджера H2A (шаг узла 459): `/<lang>/messenger-<kind>/<беседа>`. Общий для обеих веток —
 // маршрут ветки только объявляет сегмент и зовёт этот вход (сторож check-protected: «тонкий маршрут»).
 // Сегодня — окно пустой беседы на ai-elements: отправки и хранения нет.
 export function conversationRoute(kind: MessengerKind) {

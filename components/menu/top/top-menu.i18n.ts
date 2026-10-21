@@ -21,14 +21,12 @@ export type TopMenuUi = {
   /** Зарезервированные кнопки верхнего меню без перехода (261-6). */
   /** 277: Store после Core, A2A после WEB4 — тоже без перехода. */
   store: string
-  a2a: string
-  nostr: string
   blog: string
 }
 
 const UI: Record<string, TopMenuUi> = {
-  en: { menu: 'Menu', store: 'Store', a2a: 'A2A', nostr: 'Nostr', blog: 'Blog', openLeft: 'Open left menu', closeLeft: 'Close left menu', openRight: 'Open right menu', closeRight: 'Close right menu' },
-  ru: { menu: 'Меню', store: 'Store', a2a: 'A2A', nostr: 'Nostr', blog: 'Блог', openLeft: 'Открыть левое меню', closeLeft: 'Закрыть левое меню', openRight: 'Открыть правое меню', closeRight: 'Закрыть правое меню' },
+  en: { menu: 'Menu', store: 'Store', blog: 'Blog', openLeft: 'Open left menu', closeLeft: 'Close left menu', openRight: 'Open right menu', closeRight: 'Close right menu' },
+  ru: { menu: 'Меню', store: 'Store', blog: 'Блог', openLeft: 'Открыть левое меню', closeLeft: 'Закрыть левое меню', openRight: 'Открыть правое меню', closeRight: 'Закрыть правое меню' },
 }
 
 export function topMenuUi(lang: string): TopMenuUi {

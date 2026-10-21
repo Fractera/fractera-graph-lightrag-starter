@@ -12,7 +12,7 @@
         "description": "Fractera node: doors with examples, what the element needs from neighbours, what it does by itself, its catalog.",
         "required": false,
         "params": {
-          "visibility": "network",
+          "visibility": "node",
           "doors": [
             {
               "skill": "site-shell",
@@ -74,55 +74,6 @@
               ]
             },
             {
-              "skill": "help-desk",
-              "protocol": "http",
-              "method": "POST",
-              "path": "/[lang]/api/help-desk",
-              "key": "none",
-              "input": {
-                "lang": "en",
-                "messages": [
-                  {
-                    "id": "m1",
-                    "role": "user",
-                    "parts": [
-                      {
-                        "type": "text",
-                        "text": "How do I start?"
-                      }
-                    ]
-                  }
-                ]
-              },
-              "output": "UI message stream (text)",
-              "errors": {
-                "400": "empty",
-                "429": "rate-limit",
-                "503": "no-key"
-              },
-              "callers": [
-                "*"
-              ]
-            },
-            {
-              "skill": "help-desk",
-              "protocol": "http",
-              "method": "POST",
-              "path": "/[lang]/api/help-desk/voice",
-              "key": "none",
-              "input": "multipart form: audio (≤ 20 s)",
-              "output": {
-                "text": "How do I start?"
-              },
-              "errors": {
-                "429": "rate-limit",
-                "503": "no-key"
-              },
-              "callers": [
-                "*"
-              ]
-            },
-            {
               "skill": "follow-settings",
               "protocol": "http",
               "method": "POST",
@@ -176,22 +127,71 @@
             {
               "skill": "sign-in",
               "from": "auth",
-              "why": "sessions, sign-in on its own domain, guest visitors"
+              "why": "sessions, sign-in on its own domain, guest visitors",
+              "protocol": "i2i",
+              "via": {
+                "kind": "http",
+                "method": "GET",
+                "path": "/api/session",
+                "base": "AUTH_SERVICE_URL",
+                "key": "the visitor's session cookie",
+                "also": "GET /api/auth/ticket on this element's own domain"
+              }
             },
             {
               "skill": "stored-data",
               "from": "data",
-              "why": "media files and table rows; never a database file of its own"
+              "why": "media files and table rows; never a database file of its own",
+              "protocol": "i2i",
+              "via": {
+                "kind": "http",
+                "method": "GET, POST",
+                "path": "/api/*",
+                "base": "REMOTE_DATA_URL",
+                "key": "X-Data-Secret (DATA_SECRET)"
+              }
             },
             {
               "skill": "project-settings",
               "from": "config",
-              "why": "name, texts and languages of the project, unless the CONFIG link is off"
+              "why": "name, texts and languages of the project, unless the CONFIG link is off",
+              "protocol": "i2i",
+              "via": {
+                "kind": "mcp",
+                "path": "/mcp",
+                "tool": "get_project_settings",
+                "base": "CONFIG_SERVICE_URL",
+                "key": "SETTINGS_SECRET",
+                "also": "settings_version"
+              }
             },
             {
               "skill": "design-tokens",
               "from": "design",
-              "why": "colours, fonts and corners of every page"
+              "why": "colours, fonts and corners of every page",
+              "protocol": "i2i",
+              "via": {
+                "kind": "mcp",
+                "path": "/mcp",
+                "tool": "get_project_settings",
+                "base": "DESIGN_SERVICE_URL",
+                "key": "SETTINGS_SECRET",
+                "also": "subscribe"
+              }
+            },
+            {
+              "skill": "node-registry",
+              "from": "core",
+              "why": "who in the node can do a job; the core wakes this element's agent and is told when it is done",
+              "protocol": "i2i",
+              "via": {
+                "kind": "http",
+                "method": "GET",
+                "path": "/api/node/a2a?q=",
+                "base": "the core (logs/runtime.json)",
+                "key": "X-Node-Key (SETTINGS_SECRET)",
+                "also": "POST /api/agents/wake, POST /api/agents/done"
+              }
             }
           ],
           "process": [
@@ -278,30 +278,6 @@
         "application/json"
       ],
       "outputModes": [
-        "application/json"
-      ]
-    },
-    {
-      "id": "help-desk",
-      "name": "Information desk",
-      "description": "answers questions about the product by text or voice. Not over A2A: an HTTP door — POST /[lang]/api/help-desk, POST /[lang]/api/help-desk/voice (extension https://fractera.ai/a2a/ext/node/v1, «doors»)",
-      "tags": [
-        "chat",
-        "support",
-        "voice",
-        "faq",
-        "http-door"
-      ],
-      "examples": [
-        "How do I start with Fractera?",
-        "Answer this voice question"
-      ],
-      "inputModes": [
-        "application/json",
-        "audio/webm"
-      ],
-      "outputModes": [
-        "text/event-stream",
         "application/json"
       ]
     },

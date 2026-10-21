@@ -104,3 +104,6 @@ next-env.d.ts
 
 # 315: font files copied from @fontsource packages before each build (scripts/local-fonts.mjs)
 public/fonts/
+
+# 549: the test build of the node migration
+.next-p/

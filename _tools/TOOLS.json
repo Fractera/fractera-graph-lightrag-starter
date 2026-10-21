@@ -181,8 +181,6 @@
         "_tools/tool-fact-draft/client/fact-draft",
         "_tools/tool-translations-dialog/client/translation-cell",
         "_tools/tool-translations-dialog/client/translations-dialog",
-        "app/[lang]/(publicLayer)/_widgets/static/widget-static-landing-agent/help-desk",
-        "app/[lang]/(publicLayer)/api/help-desk/voice/route",
         "app/api/tools/tool-voice-input/route",
         "components/form/voice-control"
       ],

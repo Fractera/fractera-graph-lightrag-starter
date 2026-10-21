@@ -20,6 +20,6 @@ an ai-elements component from `components/ai-elements/` (install a missing one: 
 `ai-elements`). No own chat primitives, no other chat library, no hand-made bubbles. The shared window is
 `components/messenger/messenger-shell.client.tsx`.
 
-**Not built yet (named):** sending, storing and loading messages; discovery of the other side through Lagrix; payment; the agent
+**Not built yet (named):** sending, storing and loading messages; the agent
 reading the conversation. No timers and no polling. Messages, when built, are stored in `<node>/data/services/<id>/messenger-h2a/`
 (the element's data folder — it survives a rebuild), never inside the build.
