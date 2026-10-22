@@ -43,7 +43,9 @@ const SCAN_EXT = /\.(ts|tsx|js|jsx|mjs|cjs|md|json)$/
 // Их приносит установщик из их собственных репозиториев; чинить их здесь — та же
 // ошибка, что чинить гостевой слот на тест-сервере: правка живёт до первой
 // переустановки и в источник не попадает. Сторож узла в них не заходит.
-const SKIP_DIR = new Set(["node_modules", ".git", ".turbo", "dist", "build", ".vercel", ...FOREIGN_DIRS])
+// 540-3: `.uv` and `.venv` — the Python part of the graph element (uv, its Python, the packages): thousands of foreign files,
+// a machine artefact like node_modules, never our source.
+const SKIP_DIR = new Set(["node_modules", ".git", ".turbo", "dist", "build", ".vercel", ".uv", ".venv", ...FOREIGN_DIRS])
 // 330-5: и `node_modules` тоже префиксом. ✗ Измерено 2026-09-28: установщик узла на Windows отодвигает занятую папку
 // библиотек в `node_modules.old-<время>`, сканер зашёл в неё (десятки тысяч чужих файлов) и сборка элемента висела больше часа.
 const SKIP_PREFIX = [".next", "node_modules"]

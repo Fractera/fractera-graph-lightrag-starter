@@ -107,3 +107,8 @@ public/fonts/
 
 # 549: the test build of the node migration
 .next-p/
+
+# Python part of the graph (node step 540-3): uv, its managed Python and cache, the virtual environment.
+# Machine artefacts of this computer, rebuilt by scripts/graph-python.mjs; the leading slash keeps the rule at the root (550).
+/.uv/
+/.venv/
