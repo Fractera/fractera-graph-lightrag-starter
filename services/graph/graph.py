@@ -226,8 +226,12 @@ async def work(op: str, request: dict) -> int:
         async with session.post(f"{EMBED_URL}/embeddings", headers={"Authorization": f"Bearer {key}"} if key else {},
                                 json={"model": EMBED_MODEL, "input": list(texts)}) as reply:
             body = await reply.json(content_type=None)
+            if reply.status == 401 and EMBED_URL == OPENAI_URL:
+                raise RuntimeError("OpenAI refused the key (401): replace it on the node's screen")
             if reply.status != 200:
-                raise RuntimeError(f"embeddings answered {reply.status}: {str(body)[:200]}")
+                error = body.get("error") if isinstance(body, dict) else None
+                message = error.get("message", "") if isinstance(error, dict) else str(body)
+                raise RuntimeError(f"embeddings answered {reply.status}: {message[:200]}")
         COUNTS["embedCalls"] += 1
         COUNTS["embedTexts"] += len(texts)
         rows = sorted(body["data"], key=lambda row: row["index"])
@@ -289,7 +293,10 @@ def main() -> int:
     try:
         body, code = asyncio.run(work(op, shaped))
     except Exception as error:  # what the store kept is kept; the caller sees the reason
-        return refusal(op, str(error)[:300])
+        reason = str(error)
+        # LightRAG wraps the embedding failure in its own words; the two causes a person can fix get their own names.
+        kind = "key_refused" if "OpenAI refused the key" in reason else "no_key" if "no OpenAI key" in reason else op
+        return refusal(kind, reason[:300])
     return answer(body, code)
 
 

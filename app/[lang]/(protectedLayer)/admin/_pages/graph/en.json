@@ -1,0 +1,16 @@
+{
+  "title": "Knowledge graph",
+  "description": "What the node's agents stored in the graph, and a search over it.",
+  "keywords": "",
+  "blocks": [
+    {
+      "kind": "text-p",
+      "text": "Agents of this node put what they learn here as entities and the links between them, for example a page and the library it is built on. The graph keeps everything on this computer and runs only while it answers a call. A search takes your words as they are and needs no language model.",
+      "bid": "yr0ge"
+    },
+    {
+      "kind": "widget-dynamic-graph-search",
+      "bid": "iw1tv"
+    }
+  ]
+}

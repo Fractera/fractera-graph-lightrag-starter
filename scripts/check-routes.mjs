@@ -80,12 +80,16 @@ const ALLOWED = new Map([
   ['app/api/media/upload/route.ts', 'загрузка медиа'],
   ['app/api/menu/[lang]/route.ts', 'меню проекта'],
   ['app/api/revalidate/route.ts', 'перерисовать страницы'],
+  ['app/[lang]/(protectedLayer)/admin/api/graph/route.ts', 'door of the widget widget-dynamic-graph-search: the size of the graph and a search over it, architect only (node step 540-5)'],
   ['app/[lang]/(protectedLayer)/admin/api/settings/app/route.ts', 'дверь виджета widget-dynamic-site-settings: свои настройки элемента (324-8, 422 — дверь в своей ветке)'],
   ['app/api/settings/changed/route.ts', 'сигнал CONFIG и «Дизайна»'],
   ['app/api/settings/design/route.ts', 'дверь дизайна элемента'],
   ['app/api/shell/[lang]/route.ts', 'шапка и подвал для служб узла'],
   ['app/api/users/[id]/route.ts', 'одна учётная запись'],
   ['app/api/users/route.ts', 'учётные записи'],
+  ['app/api/graph-insert/route.ts', 'door graph-insert: add a ready graph of entities, relationships and chunks (door:add, node step 548-16)'],
+  ['app/api/graph-query/route.ts', 'door graph-query: find entities, relationships and chunks by the caller\'s keywords (door:add, node step 548-16)'],
+  ['app/api/graph-status/route.ts', 'door graph-status: tell whether the graph is installed and how big it is (door:add, node step 548-16)'],
 ])
 
 const found = []

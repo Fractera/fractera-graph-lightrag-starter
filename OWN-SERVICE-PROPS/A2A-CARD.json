@@ -121,6 +121,134 @@
               "callers": [
                 "*"
               ]
+            },
+            {
+              "skill": "graph-insert",
+              "protocol": "http",
+              "method": "POST",
+              "path": "/api/graph-insert",
+              "key": "node-key",
+              "input": {
+                "chunks": [
+                  {
+                    "content": "Alice Morgan studies quantum computing at Northbridge Lab.",
+                    "source_id": "doc-1"
+                  }
+                ],
+                "entities": [
+                  {
+                    "entity_name": "Alice Morgan",
+                    "entity_type": "person",
+                    "description": "A researcher who studies quantum computing.",
+                    "source_id": "doc-1"
+                  }
+                ],
+                "relationships": [
+                  {
+                    "src_id": "Alice Morgan",
+                    "tgt_id": "Quantum Computing",
+                    "description": "Alice Morgan researches quantum computing.",
+                    "keywords": "research",
+                    "weight": 1,
+                    "source_id": "doc-1"
+                  }
+                ]
+              },
+              "output": {
+                "ok": true,
+                "chunks": 1,
+                "entities": 1,
+                "relationships": 1,
+                "llmCalls": 0,
+                "embedCalls": 3,
+                "embedTexts": 3
+              },
+              "errors": {
+                "400": "bad_request",
+                "401": "bad_key",
+                "502": "graph_failed",
+                "503": "not_installed"
+              },
+              "callers": [
+                "*"
+              ]
+            },
+            {
+              "skill": "graph-query",
+              "protocol": "http",
+              "method": "POST",
+              "path": "/api/graph-query",
+              "key": "node-key",
+              "input": {
+                "query": "Who researches quantum computing?",
+                "mode": "mix",
+                "ll_keywords": [
+                  "quantum computing",
+                  "researcher"
+                ],
+                "hl_keywords": [
+                  "research"
+                ]
+              },
+              "output": {
+                "ok": true,
+                "found": true,
+                "entities": [
+                  {
+                    "entity_name": "Alice Morgan",
+                    "entity_type": "person",
+                    "description": "A researcher who studies quantum computing."
+                  }
+                ],
+                "relationships": [
+                  {
+                    "src_id": "Alice Morgan",
+                    "tgt_id": "Quantum Computing",
+                    "description": "Alice Morgan researches quantum computing."
+                  }
+                ],
+                "chunks": [
+                  {
+                    "content": "Alice Morgan studies quantum computing at Northbridge Lab."
+                  }
+                ],
+                "llmCalls": 0
+              },
+              "errors": {
+                "400": "bad_request",
+                "401": "bad_key",
+                "502": "graph_failed",
+                "503": "not_installed"
+              },
+              "callers": [
+                "*"
+              ]
+            },
+            {
+              "skill": "graph-status",
+              "protocol": "http",
+              "method": "GET",
+              "path": "/api/graph-status",
+              "key": "node-key",
+              "input": {},
+              "output": {
+                "ok": true,
+                "installed": true,
+                "entities": 3,
+                "relationships": 2,
+                "chunks": 1,
+                "lightrag": "1.5.7",
+                "python": "3.12.15",
+                "embedModel": "text-embedding-3-small",
+                "keyFound": true,
+                "busy": false
+              },
+              "errors": {
+                "401": "bad_key"
+              },
+              "callers": [
+                "*"
+              ]
             }
           ],
           "consumes": [
@@ -372,6 +500,67 @@
       ],
       "examples": [
         "Save this hero section for everyone"
+      ],
+      "inputModes": [
+        "application/json"
+      ],
+      "outputModes": [
+        "application/json"
+      ]
+    },
+    {
+      "id": "graph-insert",
+      "name": "Add a ready graph of entities, relationships and chunks",
+      "description": "add a ready graph of entities, relationships and chunks. Not over A2A: an HTTP door — POST /api/graph-insert (extension https://fractera.ai/a2a/ext/node/v1, «doors»)",
+      "tags": [
+        "http-door",
+        "knowledge-graph",
+        "lightrag",
+        "insert"
+      ],
+      "examples": [
+        "Add the entities and links found in this analysis to the graph",
+        "Remember these facts as a graph"
+      ],
+      "inputModes": [
+        "application/json"
+      ],
+      "outputModes": [
+        "application/json"
+      ]
+    },
+    {
+      "id": "graph-query",
+      "name": "Find entities, relationships and chunks by the caller's keywords",
+      "description": "find entities, relationships and chunks by the caller's keywords. Not over A2A: an HTTP door — POST /api/graph-query (extension https://fractera.ai/a2a/ext/node/v1, «doors»)",
+      "tags": [
+        "http-door",
+        "knowledge-graph",
+        "lightrag",
+        "search"
+      ],
+      "examples": [
+        "Who in the graph works on quantum computing?",
+        "What do we know about Northbridge Lab?"
+      ],
+      "inputModes": [
+        "application/json"
+      ],
+      "outputModes": [
+        "application/json"
+      ]
+    },
+    {
+      "id": "graph-status",
+      "name": "Tell whether the graph is installed and how big it is",
+      "description": "tell whether the graph is installed and how big it is. Not over A2A: an HTTP door — GET /api/graph-status (extension https://fractera.ai/a2a/ext/node/v1, «doors»)",
+      "tags": [
+        "http-door",
+        "knowledge-graph",
+        "status"
+      ],
+      "examples": [
+        "Is the graph installed, and how big is it?"
       ],
       "inputModes": [
         "application/json"
