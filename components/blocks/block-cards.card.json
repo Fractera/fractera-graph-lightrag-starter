@@ -1,0 +1,123 @@
+{
+  "name": "block-cards",
+  "component": "Cards",
+  "pageKind": true,
+  "categories": [
+    "benefits"
+  ],
+  "role": "body",
+  "placement": {
+    "page": true,
+    "inside": []
+  },
+  "accepts": [
+    "block-card"
+  ],
+  "repeat": "not-adjacent",
+  "mode": [
+    "persuade",
+    "read"
+  ],
+  "use": "A section of equal cards with no order between them: what the product is made of, or the options to choose from.",
+  "avoid": "Steps that follow each other (use block-flow); a single card; cards of different importance.",
+  "slots": {
+    "title": {
+      "maxChars": 80
+    },
+    "note": {
+      "maxChars": 220
+    },
+    "cols": {
+      "values": [
+        2,
+        3
+      ]
+    },
+    "children": {
+      "min": 2,
+      "max": 6
+    }
+  },
+  "props": "{ kind: 'block-cards'; title: string; badge?: string; note?: string; cols?: 2 | 3; blockKey?: string; children: Block[] }",
+  "markdown": "case 'block-cards':\n      return [`## ${block.title}`, ...(block.note ? ['', block.note] : []), ...block.children.flatMap((c) => ['', ...lines(c, widget)])]",
+  "variants": [],
+  "data": "static",
+  "requires": [],
+  "interactive": "none",
+  "media": "none",
+  "headings": [
+    "h2"
+  ],
+  "rtl": "untested",
+  "weight": "medium",
+  "band": false,
+  "alternatives": [],
+  "source": {
+    "origin": "own",
+    "license": "MIT"
+  },
+  "origin": {
+    "project": "base",
+    "request": null
+  },
+  "version": "1.0.0",
+  "status": "published",
+  "cases": [
+    {
+      "title": "Three access tiers of a sign-in service",
+      "mode": "persuade",
+      "position": "body",
+      "why": "Three equal options the reader compares; no order between them.",
+      "props": {
+        "title": "Roles",
+        "note": "Roles decide what a signed-in person may read and change.",
+        "cols": 3,
+        "children": [
+          {
+            "kind": "block-card",
+            "tone": "reach",
+            "children": [
+              {
+                "kind": "text-h3",
+                "text": "guest"
+              },
+              {
+                "kind": "text-p",
+                "text": "A visitor without an account."
+              }
+            ]
+          },
+          {
+            "kind": "block-card",
+            "tone": "data",
+            "children": [
+              {
+                "kind": "text-h3",
+                "text": "user"
+              },
+              {
+                "kind": "text-p",
+                "text": "A signed-in person with an account."
+              }
+            ]
+          },
+          {
+            "kind": "block-card",
+            "tone": "access",
+            "children": [
+              {
+                "kind": "text-h3",
+                "text": "architect"
+              },
+              {
+                "kind": "text-p",
+                "text": "The owner of the node."
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "docs": "npx shadcn add @fractera/block-cards (brings block-card). In a page: { \"kind\": \"block-cards\", \"title\": \"…\", \"cols\": 3, \"children\": [ { \"kind\": \"block-card\", \"children\": [ text blocks ] } ] }."
+}

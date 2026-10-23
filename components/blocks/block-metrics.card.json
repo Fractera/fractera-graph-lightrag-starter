@@ -1,0 +1,104 @@
+{
+  "name": "block-metrics",
+  "component": "Metrics",
+  "pageKind": true,
+  "categories": [
+    "trust"
+  ],
+  "role": "body",
+  "placement": {
+    "page": true,
+    "inside": []
+  },
+  "accepts": null,
+  "repeat": "not-adjacent",
+  "mode": [
+    "persuade",
+    "read"
+  ],
+  "use": "Three numbers that prove a claim, each with what it counts: a short number answers «is that actually true?» instead of a paragraph.",
+  "avoid": "More or fewer than three measures; numbers nobody measured; related values that need a table.",
+  "slots": {
+    "items": {
+      "min": 3,
+      "max": 3,
+      "fields": {
+        "value": {
+          "maxChars": 8
+        },
+        "label": {
+          "maxChars": 60
+        }
+      }
+    }
+  },
+  "props": "{ kind: 'block-metrics'; items: { value: string; label: string }[] }",
+  "markdown": "case 'block-metrics':\n      return block.items.map((m) => `- **${m.value}** ${m.label}`)",
+  "variants": [],
+  "data": "static",
+  "requires": [],
+  "interactive": "none",
+  "media": "none",
+  "headings": [],
+  "rtl": "untested",
+  "weight": "medium",
+  "band": false,
+  "alternatives": [],
+  "source": {
+    "origin": "own",
+    "license": "MIT"
+  },
+  "origin": {
+    "project": "base",
+    "request": null
+  },
+  "version": "1.0.0",
+  "status": "published",
+  "cases": [
+    {
+      "title": "Three numbers about a service: languages, access tiers, roles",
+      "mode": "persuade",
+      "position": "body",
+      "why": "Each number is measured and says what it counts.",
+      "props": {
+        "items": [
+          {
+            "value": "82",
+            "label": "languages of the sign-in screens"
+          },
+          {
+            "value": "3",
+            "label": "access tiers the service enforces"
+          },
+          {
+            "value": "15",
+            "label": "roles in the vocabulary"
+          }
+        ]
+      }
+    },
+    {
+      "title": "Stats of a product launch: sign-ups, uptime, response time",
+      "mode": "persuade",
+      "position": "body",
+      "why": "Proof in numbers right after the claim it supports.",
+      "props": {
+        "items": [
+          {
+            "value": "12k",
+            "label": "people signed up in the first month"
+          },
+          {
+            "value": "99.9%",
+            "label": "uptime over the last quarter"
+          },
+          {
+            "value": "40 ms",
+            "label": "median response time"
+          }
+        ]
+      }
+    }
+  ],
+  "docs": "npx shadcn add @fractera/block-metrics. In a page: { \"kind\": \"block-metrics\", \"items\": [ { \"value\": \"82\", \"label\": \"…\" }, … three items ] }. The value is not translated; the label is a page string."
+}

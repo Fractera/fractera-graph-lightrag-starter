@@ -1,0 +1,55 @@
+{
+  "name": "block-section-separator",
+  "component": "SectionSeparator",
+  "pageKind": true,
+  "categories": [
+    "page-material"
+  ],
+  "role": "body",
+  "placement": {
+    "page": true,
+    "inside": []
+  },
+  "accepts": null,
+  "repeat": "not-adjacent",
+  "mode": [
+    "persuade",
+    "read",
+    "operate"
+  ],
+  "use": "A visible line between two parts of a page where the boundary must be seen, not guessed from spacing.",
+  "avoid": "First or last on a page; between every two sections.",
+  "slots": {},
+  "props": "{ kind: 'block-section-separator' }",
+  "markdown": "case 'block-section-separator':\n      return ['---']",
+  "variants": [],
+  "data": "static",
+  "requires": [],
+  "interactive": "none",
+  "media": "none",
+  "headings": [],
+  "rtl": "untested",
+  "weight": "light",
+  "band": false,
+  "alternatives": [],
+  "source": {
+    "origin": "own",
+    "license": "MIT"
+  },
+  "origin": {
+    "project": "base",
+    "request": null
+  },
+  "version": "1.0.0",
+  "status": "published",
+  "cases": [
+    {
+      "title": "A boundary between the product story and the pricing part",
+      "mode": "read",
+      "position": "body",
+      "why": "Two parts of different purpose read as separate.",
+      "props": {}
+    }
+  ],
+  "docs": "npx shadcn add @fractera/block-section-separator. In a page: { \"kind\": \"block-section-separator\" }."
+}

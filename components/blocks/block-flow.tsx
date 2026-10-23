@@ -9,15 +9,15 @@ export type FlowProps = { blockKey?: string; badge?: string; title: string; note
 
 export function Flow({ blockKey: k = 'flow', badge, title, note, steps }: FlowProps) {
   return (
-    <section aria-labelledby={`${k}-t`} className="my-10">
+    <section data-block="i1sd2" aria-labelledby={`${k}-t`} className="my-10">
       <SectionHead id={`${k}-t`} badge={badge} title={title} note={note ? inline(note, `${k}-n`) : undefined} />
-      <ol className="flow relative mt-8 grid list-none gap-8 p-0 md:gap-6" style={{ '--flow-n': steps.length } as CSSProperties}>
+      <ol data-block="o8bzk" className="flow relative mt-8 grid list-none gap-8 p-0 md:gap-6" style={{ '--flow-n': steps.length } as CSSProperties}>
         {steps.map((s, i) => (
-          <li key={`${k}-${i}`} className="flow-step relative flex flex-col gap-4" style={{ '--flow-i': i } as CSSProperties}>
+          <li data-block="m7pcr" key={`${k}-${i}`} className="flow-step relative flex flex-col gap-4" style={{ '--flow-i': i } as CSSProperties}>
             <span aria-hidden className="flow-node relative z-10 flex size-14 self-center items-center justify-center rounded-full border font-semibold">{i + 1}</span>
-            <div className="flow-card w-full flex-1 rounded-2xl border p-5">
-              <H3>{s.title}</H3>
-              <P className="mt-2">{inline(s.text, `${k}-${i}-b`)}</P>
+            <div data-block="nka8h" className="flow-card w-full flex-1 rounded-2xl border p-5">
+              <H3 data-block="vnxwk">{s.title}</H3>
+              <P data-block="y4wf0" className="mt-2">{inline(s.text, `${k}-${i}-b`)}</P>
             </div>
           </li>
         ))}

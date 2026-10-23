@@ -13,5 +13,5 @@ const TONE_FILL: Record<Tone, string> = {
 }
 
 export function Card({ tone, children }: CardProps) {
-  return <div className={`flex w-full flex-1 flex-col gap-3 rounded-2xl border p-6 ${tone ? TONE_FILL[tone] : 'border-border'}`}>{children}</div>
+  return <div data-block="doxvz" className={`flex w-full flex-1 flex-col gap-3 rounded-2xl border p-6 ${tone ? TONE_FILL[tone] : 'border-border'}`}>{children}</div>
 }

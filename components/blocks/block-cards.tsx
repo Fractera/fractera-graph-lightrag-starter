@@ -9,10 +9,10 @@ const COLS: Record<2 | 3, string> = { 2: 'md:grid-cols-2', 3: 'md:grid-cols-3' }
 
 export function Cards({ blockKey: k = 'cards', badge, title, note, cols = 3, children }: CardsProps) {
   return (
-    <section aria-labelledby={`${k}-t`} className="my-10">
+    <section data-block="za3bq" aria-labelledby={`${k}-t`} className="my-10">
       <SectionHead id={`${k}-t`} badge={badge} title={title} note={note ? inline(note, `${k}-n`) : undefined} />
-      <ul className={`mt-8 grid list-none gap-6 p-0 ${COLS[cols]}`}>
-        {Children.toArray(children).map((child, i) => <li key={`${k}-${i}`} className="flex">{child}</li>)}
+      <ul data-block="z2a8h" className={`mt-8 grid list-none gap-6 p-0 ${COLS[cols]}`}>
+        {Children.toArray(children).map((child, i) => <li data-block="hel9w" key={`${k}-${i}`} className="flex">{child}</li>)}
       </ul>
     </section>
   )

@@ -1,0 +1,75 @@
+{
+  "name": "block-card",
+  "component": "Card",
+  "pageKind": true,
+  "categories": [
+    "page-material"
+  ],
+  "role": "any",
+  "placement": {
+    "page": false,
+    "inside": [
+      "block-cards"
+    ]
+  },
+  "accepts": [
+    "text"
+  ],
+  "repeat": "free",
+  "mode": [
+    "persuade",
+    "read"
+  ],
+  "use": "One card inside block-cards: a tinted frame around a short heading and a sentence or two.",
+  "avoid": "A page by itself (put it inside block-cards); long text.",
+  "slots": {
+    "children": {
+      "min": 1,
+      "max": 4
+    }
+  },
+  "props": "{ kind: 'block-card'; tone?: 'data' | 'reach' | 'access' | 'code' | 'muted'; children: Block[] }",
+  "markdown": "case 'block-card':\n      return block.children.flatMap((c) => lines(c, widget))",
+  "variants": [],
+  "data": "static",
+  "requires": [],
+  "interactive": "none",
+  "media": "none",
+  "headings": [],
+  "rtl": "untested",
+  "weight": "light",
+  "band": false,
+  "alternatives": [],
+  "source": {
+    "origin": "own",
+    "license": "MIT"
+  },
+  "origin": {
+    "project": "base",
+    "request": null
+  },
+  "version": "1.0.0",
+  "status": "published",
+  "cases": [
+    {
+      "title": "A feature card: a short heading and one sentence",
+      "mode": "persuade",
+      "position": "inside block-cards",
+      "why": "The tone groups the card with its meaning; the text stays short.",
+      "props": {
+        "tone": "data",
+        "children": [
+          {
+            "kind": "text-h3",
+            "text": "Guest access"
+          },
+          {
+            "kind": "text-p",
+            "text": "A guest signs in with an email address alone."
+          }
+        ]
+      }
+    }
+  ],
+  "docs": "Installed with block-cards. Only inside block-cards: { \"kind\": \"block-card\", \"tone\": \"data\", \"children\": [ { \"kind\": \"text-h3\", … }, { \"kind\": \"text-p\", … } ] }."
+}
