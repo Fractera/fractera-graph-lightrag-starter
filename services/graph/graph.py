@@ -5,13 +5,14 @@ call of the element's doors starts Python for one operation and the process ends
 
     python -I services/graph/graph.py <insert|query|status>    request JSON on stdin, answer JSON (one line) on stdout
 
-  insert   a ready graph: {chunks: [{content, source_id}],
-                           entities: [{entity_name, entity_type, description, source_id}],
-                           relationships: [{src_id, tgt_id, description, keywords, weight?, source_id}]}
-           every entity and relationship names, by source_id, a chunk of the same insert
-  query    {query, mode?, hl_keywords?, ll_keywords?, top_k?, chunk_top_k?} → {found, entities, relationships, chunks} — retrieval
-           without generation (aquery_data); nothing relevant is ok with found false; every mode but `naive` needs the caller's
-           keywords: no language model is ever called here
+  insert   a ready graph: {chunks: [{content, source_id, file_path?}],
+                           entities: [{entity_name, entity_type, description, source_id, file_path?}],
+                           relationships: [{src_id, tgt_id, description, keywords, weight?, source_id, file_path?}]}
+           every entity and relationship names, by source_id, a chunk of the same insert; `file_path` is where the knowledge comes
+           from — `external-study:<task>` for a product studied by reverse engineering (node step 590-1)
+  query    {query, mode?, hl_keywords?, ll_keywords?, top_k?, chunk_top_k?} → {found, entities, relationships, chunks, notice?} —
+           retrieval without generation (aquery_data); nothing relevant is ok with found false; every mode but `naive` needs the
+           caller's keywords: no language model is ever called here. Every item carries `origin`: `external-study` or `node`
            One process holds ~190-200 MB while it runs: the caller runs one call at a time (the lock guards the files, not memory)
   status   {} → counts of entities, relationships and chunks, read from the files without opening LightRAG
 
@@ -25,6 +26,7 @@ import importlib.metadata
 import json
 import logging
 import os
+import re
 import sys
 import time
 from pathlib import Path
@@ -76,6 +78,14 @@ MODES = {"local", "global", "hybrid", "naive", "mix"}
 NO_RESULT = ("Query returned no results", "No relevant document chunks found.")  # lightrag 1.5.7, aquery_data
 LIMITS = {"chunks": 2000, "entities": 5000, "relationships": 10000, "text": 50000}
 COUNTS = {"llmCalls": 0, "embedCalls": 0, "embedTexts": 0}
+# ORIGIN (node step 590-1). The owner of the node, 2026-10-23: «проверь что граф при работе с реверс-инжиниринг очень чётко размечает
+# его как то что это не наш кот а это источник» — an agent must never take a studied product for this node's own code. LightRAG keeps
+# `file_path` with every chunk, entity and relationship and gives it back on a query; the reverse engineering element writes
+# `external-study:<task>` there, and every item of a query answer is marked by it.
+FILE_PATH_MAX = 300
+EXTERNAL = re.compile(r"external-study:([A-Za-z0-9._-]+)")
+NOTICE = ("Items with origin external-study describe a product studied by reverse engineering ({tasks}): a source to learn how it "
+          "works, never this node's code, pages, routes or data.")
 
 
 def openai_key() -> str:
@@ -110,6 +120,11 @@ def shape_graph(body):
                 if not text(item.get(field)):
                     return f"{part}[{index}].{field} must be a non-empty string"
             row = {field: item[field] for field in required}
+            if "file_path" in item:
+                where_from = item["file_path"]
+                if not isinstance(where_from, str) or not where_from.strip() or len(where_from) > FILE_PATH_MAX:
+                    return f"{part}[{index}].file_path must be a non-empty string of at most {FILE_PATH_MAX} characters"
+                row["file_path"] = where_from.strip()
             if part == "entities":
                 row["entity_type"] = item.get("entity_type") if text(item.get("entity_type")) else "UNKNOWN"
             if part == "relationships" and isinstance(item.get("weight"), (int, float)):
@@ -136,6 +151,20 @@ def shape_query(body):
         return "the graph calls no language model: send hl_keywords and/or ll_keywords, or use mode naive"
     sizes = {name: body[name] for name in ("top_k", "chunk_top_k") if isinstance(body.get(name), int) and 0 < body[name] <= 200}
     return {"query": body["query"], "mode": mode, **words, **sizes}
+
+
+def mark_origin(body: dict) -> None:
+    """Every entity, relationship and chunk of a query answer gets `origin`; a studied product adds one `notice` (node step 590-1)."""
+    tasks: list = []
+    for part in ("entities", "relationships", "chunks"):
+        for item in body.get(part) or []:
+            if not isinstance(item, dict):
+                continue
+            found = EXTERNAL.findall(str(item.get("file_path") or ""))
+            item["origin"] = "external-study" if found else "node"
+            tasks += [task for task in found if task not in tasks]
+    if tasks:
+        body["notice"] = NOTICE.format(tasks=", ".join(tasks[:5]))
 
 
 def pid_alive(pid: int) -> bool:
@@ -263,6 +292,7 @@ async def work(op: str, request: dict) -> int:
             body = {"ok": found or result.get("message") in NO_RESULT, "found": found, "message": result.get("message", ""),
                     "entities": data.get("entities", []), "relationships": data.get("relationships", []),
                     "chunks": data.get("chunks", []), **COUNTS}
+            mark_origin(body)
             return body, 0 if body["ok"] else 1
         finally:
             await rag.finalize_storages()

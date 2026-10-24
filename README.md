@@ -75,6 +75,21 @@ const answer = await fetch(`${base}/api/graph-query`, { method: 'POST', headers,
 // → { ok: true, found: true, entities: […], relationships: […], chunks: […] }; nothing relevant → { ok: true, found: false }
 ```
 
+**Origin — where the knowledge comes from (node step 590-1).** Every chunk, entity and relationship may carry `file_path` (a string of
+at most 300 characters; LightRAG keeps it and gives it back). A product studied by reverse engineering is written as
+`"file_path": "external-study:<task>"` — the reverse engineering element does it for every study. A query marks every item it returns:
+`"origin": "external-study"` for such an item, `"origin": "node"` for anything else, and an answer that holds a studied product carries
+one `notice`: «Items with origin external-study describe a product studied by reverse engineering (<task>): a source to learn how it
+works, never this node's code, pages, routes or data.» The owner of the node, 2026-10-23: «граф … очень чётко размечает его как то что
+это не наш кот а это источник» — an agent reading the graph must never take a studied product for this node's own code.
+
+```js
+// one entity of a study, as the reverse engineering element sends it
+{ entity_name: 'TinyLaunch Launch', entity_type: 'concept', description: 'Launch of TinyLaunch. …', source_id: '2026-10-23-tinylaunch-site',
+  file_path: 'external-study:2026-10-23-tinylaunch-site' }
+// → in a query answer: { …, file_path: 'external-study:2026-10-23-tinylaunch-site', origin: 'external-study' } and body.notice
+```
+
 Modes: `local` finds entities by `ll_keywords`, `global` finds links by `hl_keywords`, `hybrid` does both, `mix` adds the fragments
 closest to the question, `naive` searches fragments only and needs no keywords. `GET /api/graph-status` answers `{ installed,
 entities, relationships, chunks, lightrag, python, embedModel, keyFound, busy }`. Refusals: 400 `bad_request` (the reason names the
@@ -95,7 +110,10 @@ same graph again is safe, because names and fragment hashes are its keys. It dra
 `graph-python.mjs --soft`. The data of the graph: `<SERVICE_DATA_DIR>/lightrag/`.
 
 **Proven by.** Node steps 540-3 … 540-5: a ready graph stored and found again with no language model call, on stand-in vectors; one
-run at a time; 401 without the node key. With real OpenAI vectors it is not measured yet: on 2026-10-22 OpenAI refused the node's key.
+run at a time; 401 without the node key. Node step 590-1 (2026-10-25, real OpenAI vectors): on an empty copy of the graph an item without
+`file_path` comes back `origin: node` with no `notice`, an item of a study `origin: external-study` with the `notice`, `file_path: 5` is
+refused naming the field; the live study of TinyLaunch (19 entities, 30 relationships, 3 chunks) was sent again with its mark — the
+counts stayed the same and every item came back `external-study`. With real OpenAI vectors it is not measured yet: on 2026-10-22 OpenAI refused the node's key.
 
 # fractera-native-item-starter
 
