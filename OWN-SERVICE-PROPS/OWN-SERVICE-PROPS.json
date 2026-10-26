@@ -2,7 +2,7 @@
   "id": "graph",
   "name": "Knowledge graph",
   "shortDescription": "The node's shared knowledge graph on LightRAG: elements store what they learn as entities and links and find it again by meaning.",
-  "longDescription": "",
+  "longDescription": "The knowledge graph of the node, with LightRAG living inside this element (Python managed by uv). There is no resident graph process: each call to its doors runs one operation, about two seconds, and ends. Elements bring a ready graph of entities and links through POST /api/graph-insert and ask with their own keywords through POST /api/graph-query; GET /api/graph-status tells how big it is. No language model is called inside the graph: OpenAI only computes the vectors, with the core's key first and the element's own otherwise. Separate spaces keep different knowledge apart, among them the node's skills base and the facts of the deep memory. Its data lives on this computer's disk, in the node's data folder.",
   "accepts": "",
   "returns": "",
   "designSkill": "impeccable",
