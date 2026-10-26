@@ -16,8 +16,14 @@ call of the element's doors starts Python for one operation and the process ends
            One process holds ~190-200 MB while it runs: the caller runs one call at a time (the lock guards the files, not memory)
   status   {} → counts of entities, relationships and chunks, read from the files without opening LightRAG
 
+  space    every request may name `space` — a store of its own, apart from the shared graph (node step 596-1): the node's deep
+           memory keeps what a person said in `space: "memory"`, so the skills of other projects (595-3) and studied products (590)
+           never come back as facts of that person's life, and the shared graph never sees the person's facts. No `space` — the
+           shared graph, exactly as before.
+
 Exit code 0 — ok; 1 — a refusal named in the answer {"ok": false, "error", "detail"}; 2 — the element is set up wrong.
-The graph: <SERVICE_DATA_DIR>/lightrag/ (absolute, outside every build); the lock: <SERVICE_DATA_DIR>/lightrag.lock (the pid inside).
+The graph: <SERVICE_DATA_DIR>/lightrag/ (absolute, outside every build); a space: <SERVICE_DATA_DIR>/spaces/<space>/; the lock (one for
+all, it guards the memory of the machine too): <SERVICE_DATA_DIR>/lightrag.lock (the pid inside).
 OpenAI does one thing — the vectors (embeddings): the core's key first, then the element's own (node law 336).
 """
 
@@ -83,6 +89,9 @@ COUNTS = {"llmCalls": 0, "embedCalls": 0, "embedTexts": 0}
 # `file_path` with every chunk, entity and relationship and gives it back on a query; the reverse engineering element writes
 # `external-study:<task>` there, and every item of a query answer is marked by it.
 FILE_PATH_MAX = 300
+# SPACE (node step 596-1): the name of a caller's own store. Lower-case latin, digits and dashes — it becomes a folder name, so
+# nothing that could climb out of <SERVICE_DATA_DIR>/spaces/ is accepted.
+SPACE = re.compile(r"^[a-z][a-z0-9-]{0,31}$")
 EXTERNAL = re.compile(r"external-study:([A-Za-z0-9._-]+)")
 NOTICE = ("Items with origin external-study describe a product studied by reverse engineering ({tasks}): a source to learn how it "
           "works, never this node's code, pages, routes or data.")
@@ -101,6 +110,16 @@ def openai_key() -> str:
 
 def text(value) -> bool:
     return isinstance(value, str) and value.strip() != "" and len(value) <= LIMITS["text"]
+
+
+def store_of(body):
+    """Where this request's graph lives: the shared one, or the caller's own space (node step 596-1); a bad name is a refusal."""
+    name = body.get("space") if isinstance(body, dict) else None
+    if name is None:
+        return WORK, None
+    if not isinstance(name, str) or not SPACE.match(name):
+        return None, "space must match ^[a-z][a-z0-9-]{0,31}$ — the name of the caller's own store"
+    return DATA / "spaces" / name, None
 
 
 def shape_graph(body):
@@ -311,12 +330,18 @@ def main() -> int:
     if DATA is None:
         # A relative path would put the graph inside a build and lose it at the next rebuild (node law 259-260).
         return answer({"ok": False, "error": "setup", "detail": "SERVICE_DATA_DIR must be an absolute path"}, 2)
-    if op == "status":
-        return status()
     try:
         request = json.loads(sys.stdin.buffer.read().decode("utf-8") or "{}")
     except ValueError as error:
         return refusal("json", str(error)[:200])
+    # 596-1: the shared graph or the caller's own space — decided once, here, for every operation below.
+    global WORK
+    where, problem = store_of(request)
+    if problem:
+        return refusal("request", problem)
+    WORK = where
+    if op == "status":
+        return status()
     shaped = shape_graph(request) if op == "insert" else shape_query(request)
     if isinstance(shaped, str):
         return refusal("request", shaped)

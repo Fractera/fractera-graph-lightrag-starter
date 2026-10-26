@@ -90,6 +90,22 @@ works, never this node's code, pages, routes or data.» The owner of the node, 2
 // → in a query answer: { …, file_path: 'external-study:2026-10-23-tinylaunch-site', origin: 'external-study' } and body.notice
 ```
 
+**Spaces — a store of the caller's own (node step 596-1).** Every request (`graph-insert`, `graph-query`) may name `"space": "<name>"`
+(lower-case latin, digits and dashes, up to 32 characters). Such a request works on `<SERVICE_DATA_DIR>/spaces/<name>/` — a graph of its
+own that the shared graph never sees, and the other way round. Without `space` the request works on the shared graph exactly as before.
+The node's deep memory keeps what a person said in `space: "memory"`: the skills of other projects and the studied products in the shared
+graph never come back as facts of that person's life. A bad name is refused naming the field (400 `bad_request`); the lock is one for all
+spaces — one run of the graph at a time. `GET /api/graph-status` counts the shared graph only.
+
+```js
+await fetch(`${base}/api/graph-insert`, { method: 'POST', headers, body: JSON.stringify({ space: 'memory', chunks: […], entities: […], relationships: […] }) })
+await fetch(`${base}/api/graph-query`, { method: 'POST', headers, body: JSON.stringify({ space: 'memory', query: 'Where does Anna live?', mode: 'local', ll_keywords: ['Anna'] }) })
+```
+
+Proven (596-1): an insert into a probe space left the shared graph at 91 entities, 94 relationships, 53 chunks; the space held its 2
+entities and 1 relationship; a query of the shared graph did not return them (it returned its own nearest entities), the same query with
+the space did; `space: "Bad/Name"` — 400.
+
 Modes: `local` finds entities by `ll_keywords`, `global` finds links by `hl_keywords`, `hybrid` does both, `mix` adds the fragments
 closest to the question, `naive` searches fragments only and needs no keywords. `GET /api/graph-status` answers `{ installed,
 entities, relationships, chunks, lightrag, python, embedModel, keyFound, busy }`. Refusals: 400 `bad_request` (the reason names the
