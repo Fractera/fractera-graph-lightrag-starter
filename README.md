@@ -106,6 +106,20 @@ Proven (596-1): an insert into a probe space left the shared graph at 91 entitie
 entities and 1 relationship; a query of the shared graph did not return them (it returned its own nearest entities), the same query with
 the space did; `space: "Bad/Name"` — 400.
 
+**How close is close enough — `threshold` (node step 598-2).** A query may carry `"threshold": <0…1>` — LightRAG's own
+`cosine_better_than_threshold` for this one query: the vector stores return only entities, links and fragments at least this close.
+Without it LightRAG's default 0.2 applies, which lets almost anything through, so a question far from everything in the graph still gets
+its nearest items and `found: false` never comes. The node's skills search (`skills_find` of the core) asks for `0.5`: measured on 21
+questions, the 12 within the skills base found their skill and the 9 outside it found nothing (0.45 let two of the nine through, 0.55
+lost two of the twelve). A bad value — 400 `bad_request` naming the field.
+
+```js
+await fetch(`${base}/api/graph-query`, { method: 'POST', headers, body: JSON.stringify({
+  query: 'Fix a leaking kitchen faucet', mode: 'mix', ll_keywords: ['faucet', 'washer'], hl_keywords: ['home repair'], threshold: 0.5,
+}) })
+// → { ok: true, found: false, entities: [], relationships: [], chunks: [] } — nothing in the graph is that close
+```
+
 Modes: `local` finds entities by `ll_keywords`, `global` finds links by `hl_keywords`, `hybrid` does both, `mix` adds the fragments
 closest to the question, `naive` searches fragments only and needs no keywords. `GET /api/graph-status` answers `{ installed,
 entities, relationships, chunks, lightrag, python, embedModel, keyFound, busy }`. Refusals: 400 `bad_request` (the reason names the

@@ -98,23 +98,23 @@ export function GraphSearch({ lang, ui }: { lang: string; ui: GraphSearchUi }) {
       <div data-block="dbrrc" className="rounded-lg border p-4">
         <H4 data-block="zyra7" variant="ui">{ui.statusTitle}</H4>
         {statusFailed ? (
-          <Small className="mt-3 text-muted-foreground">{ui.unreachable}</Small>
+          <Small data-block="vr263" className="mt-3 text-muted-foreground">{ui.unreachable}</Small>
         ) : status && !status.installed ? (
-          <Small className="mt-3">{ui.notInstalled}</Small>
+          <Small data-block="pza35" className="mt-3">{ui.notInstalled}</Small>
         ) : (
           <>
             <div data-block="vuicc" className="mt-3 grid grid-cols-3 gap-3">
               {counts.map((c) => (
                 <div data-block="lw90g" key={c.label} className="rounded-md border p-3">
                   {status ? <Metric>{c.value ?? 0}</Metric> : <Skeleton className="h-7 w-12" />}
-                  <Small className="text-muted-foreground">{c.label}</Small>
+                  <Small data-block="n9les" className="text-muted-foreground">{c.label}</Small>
                 </div>
               ))}
             </div>
-            <Small className="mt-3 text-muted-foreground">
+            <Small data-block="oou5g" className="mt-3 text-muted-foreground">
               {status ? fill(ui.versions, { lightrag: status.lightrag, python: status.python, embedModel: status.embedModel }) : ui.loading}
             </Small>
-            {status && status.keyFound === false && <Small className="mt-2">{ui.noKey}</Small>}
+            {status && status.keyFound === false && <Small data-block="g8bew" className="mt-2">{ui.noKey}</Small>}
           </>
         )}
       </div>
@@ -134,13 +134,13 @@ export function GraphSearch({ lang, ui }: { lang: string; ui: GraphSearchUi }) {
             {searching ? ui.searching : ui.find}
           </Button>
         </div>
-        <Small className="mt-2 text-muted-foreground">{ui.hint}</Small>
+        <Small data-block="ffthv" className="mt-2 text-muted-foreground">{ui.hint}</Small>
 
         {error && <P data-block="ijb7m" role="alert" className="mt-4">{error}</P>}
         {result && !result.found && <P data-block="ooiza" className="mt-4">{ui.nothing}</P>}
         {result && result.found && (
           <div data-block="umu2j" className="mt-4 flex flex-col gap-4">
-            <Small className="text-muted-foreground">
+            <Small data-block="hha4i" className="text-muted-foreground">
               {fill(ui.foundLine, { entities: result.entities.length, relationships: result.relationships.length, chunks: result.chunks.length })}
             </Small>
             {result.entities.length > 0 && (
@@ -150,9 +150,9 @@ export function GraphSearch({ lang, ui }: { lang: string; ui: GraphSearchUi }) {
                   {result.entities.map((e) => (
                     <li data-block="clgil" key={e.entity_name} data-graph-entity={e.entity_name}>
                       <P data-block="mbo5f" className="font-medium">
-                        {e.entity_name} {e.entity_type && <Badge variant="secondary">{e.entity_type}</Badge>}
+                        {e.entity_name} {e.entity_type && <Badge data-block="xcfl0" variant="secondary">{e.entity_type}</Badge>}
                       </P>
-                      {e.description && <Small className="text-muted-foreground">{e.description}</Small>}
+                      {e.description && <Small data-block="qt8i5" className="text-muted-foreground">{e.description}</Small>}
                     </li>
                   ))}
                 </ul>
@@ -165,7 +165,7 @@ export function GraphSearch({ lang, ui }: { lang: string; ui: GraphSearchUi }) {
                   {result.relationships.map((l) => (
                     <li data-block="t5hea" key={`${l.src_id}→${l.tgt_id}`}>
                       <P data-block="uy8a6" className="font-medium">{l.src_id} → {l.tgt_id}</P>
-                      {l.description && <Small className="text-muted-foreground">{l.description}</Small>}
+                      {l.description && <Small data-block="ffbkf" className="text-muted-foreground">{l.description}</Small>}
                     </li>
                   ))}
                 </ul>
@@ -176,7 +176,7 @@ export function GraphSearch({ lang, ui }: { lang: string; ui: GraphSearchUi }) {
                 <H4 data-block="wbqjg" variant="ui">{ui.chunks}</H4>
                 <ul data-block="spj6e" className="mt-2 flex flex-col gap-2">
                   {result.chunks.slice(0, 5).map((c, i) => (
-                    <li data-block="p0ad2" key={i}><Small className="text-muted-foreground">{c.content.slice(0, 400)}</Small></li>
+                    <li data-block="p0ad2" key={i}><Small data-block="atwj1" className="text-muted-foreground">{c.content.slice(0, 400)}</Small></li>
                   ))}
                 </ul>
               </div>

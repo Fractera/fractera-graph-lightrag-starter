@@ -10,9 +10,12 @@ call of the element's doors starts Python for one operation and the process ends
                            relationships: [{src_id, tgt_id, description, keywords, weight?, source_id, file_path?}]}
            every entity and relationship names, by source_id, a chunk of the same insert; `file_path` is where the knowledge comes
            from — `external-study:<task>` for a product studied by reverse engineering (node step 590-1)
-  query    {query, mode?, hl_keywords?, ll_keywords?, top_k?, chunk_top_k?} → {found, entities, relationships, chunks, notice?} —
-           retrieval without generation (aquery_data); nothing relevant is ok with found false; every mode but `naive` needs the
-           caller's keywords: no language model is ever called here. Every item carries `origin`: `external-study` or `node`
+  query    {query, mode?, hl_keywords?, ll_keywords?, top_k?, chunk_top_k?, threshold?} → {found, entities, relationships, chunks,
+           notice?} — retrieval without generation (aquery_data); nothing relevant is ok with found false; every mode but `naive`
+           needs the caller's keywords: no language model is ever called here. Every item carries `origin`: `external-study` or `node`
+           `threshold` (0 < t < 1, optional) — LightRAG's own cosine_better_than_threshold for this one query (node step 598-2):
+           the vector stores return only what is at least this close. Without it — LightRAG's default 0.2, which lets almost
+           anything through, so «nothing close enough» never comes; the node's skills search asks for a stricter one
            One process holds ~190-200 MB while it runs: the caller runs one call at a time (the lock guards the files, not memory)
   status   {} → counts of entities, relationships and chunks, read from the files without opening LightRAG
 
@@ -169,6 +172,11 @@ def shape_query(body):
     if mode != "naive" and not (words["hl_keywords"] or words["ll_keywords"]):
         return "the graph calls no language model: send hl_keywords and/or ll_keywords, or use mode naive"
     sizes = {name: body[name] for name in ("top_k", "chunk_top_k") if isinstance(body.get(name), int) and 0 < body[name] <= 200}
+    threshold = body.get("threshold")
+    if threshold is not None:
+        if isinstance(threshold, bool) or not isinstance(threshold, (int, float)) or not 0 < threshold < 1:
+            return "threshold must be a number between 0 and 1"
+        sizes["threshold"] = float(threshold)
     return {"query": body["query"], "mode": mode, **words, **sizes}
 
 
@@ -292,8 +300,9 @@ async def work(op: str, request: dict) -> int:
     WORK.mkdir(parents=True, exist_ok=True)
     await take_lock()
     try:
+        strict = {"cosine_better_than_threshold": request["threshold"]} if op == "query" and "threshold" in request else {}
         rag = LightRAG(working_dir=str(WORK), llm_model_func=no_llm,
-                       embedding_func=EmbeddingFunc(embedding_dim=EMBED_DIMS, max_token_size=8192, func=embed))
+                       embedding_func=EmbeddingFunc(embedding_dim=EMBED_DIMS, max_token_size=8192, func=embed), **strict)
         await rag.initialize_storages()
         try:
             if op == "insert":
