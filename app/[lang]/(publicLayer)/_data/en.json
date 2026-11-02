@@ -458,7 +458,7 @@
         {
           "side": "left",
           "who": "Fractera agent",
-          "text": "Your project will live on GitHub. Create a free account there, open https://github.com/fractera/agi and press Fork — all the project files land in your GitHub. Copy the address of your copy.",
+          "text": "Your project will live on GitHub. Create a free account there, open https://github.com/Fractera/web4-node-starter-kit and press Fork — all the project files land in your GitHub. Copy the address of your copy.",
           "contract": "h2a"
         },
         {
@@ -1012,7 +1012,7 @@
       "departure": {
         "label": "Departure",
         "question": "I want to set off. Walk me through the whole launch, step by step.",
-        "answer": "The launch, step by step:\n1. Install Claude Code — one line in a terminal, from https://code.claude.com/docs/en/setup — and take the Pro plan at $20 a month: Claude Code is included.\n2. Create a free GitHub account, open https://github.com/fractera/agi, press Fork and copy the address of your copy.\n3. Make an empty folder for the project, open a terminal in it, run claude, paste the link and write «launch this».\n4. The agent installs the node, checks that it works on your computer and puts it on the internet right away at a temporary Cloudflare address.\n5. From then on your own lead orchestrator agent works with you, mostly in Telegram.\n6. Later you buy your own domain and connect it on the node page «Domain and hosting → Domain activation».\nStart now: open https://github.com/fractera/agi and press Fork."
+        "answer": "The launch, step by step:\n1. Install Claude Code — one line in a terminal, from https://code.claude.com/docs/en/setup — and take the Pro plan at $20 a month: Claude Code is included.\n2. Create a free GitHub account, open https://github.com/Fractera/web4-node-starter-kit, press Fork and copy the address of your copy.\n3. Make an empty folder for the project, open a terminal in it, run claude, paste the link and write «launch this».\n4. The agent installs the node, checks that it works on your computer and puts it on the internet right away at a temporary Cloudflare address.\n5. From then on your own lead orchestrator agent works with you, mostly in Telegram.\n6. Later you buy your own domain and connect it on the node page «Domain and hosting → Domain activation».\nStart now: open https://github.com/Fractera/web4-node-starter-kit and press Fork."
       },
       "thinking": "Checking the timetable…",
       "limit": "Many questions in a row — the desk answers up to 40 times an hour per address. Please come back a little later.",
@@ -1024,7 +1024,7 @@
       },
       "github": {
         "label": "Fractera repository on GitHub",
-        "href": "https://github.com/fractera/agi"
+        "href": "https://github.com/Fractera/web4-node-starter-kit"
       },
       "answers": [
         "The Fractera node itself is open and free. You pay only for Claude Pro — $20 a month, Claude Code included — and, if you want, for your own domain at a registrar. The Cloudflare tunnel and the copy of your pages run on the free plan, and your computer is the server; a rented server (VPS) comes later, only if you want it.",
