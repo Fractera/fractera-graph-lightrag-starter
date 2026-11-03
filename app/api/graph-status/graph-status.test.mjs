@@ -15,7 +15,7 @@ check('says whether the Python part is installed', typeof b.installed === 'boole
 if (b.installed) {
   check('counts are numbers', ['entities', 'relationships', 'chunks'].every((k) => Number.isInteger(b[k]) && b[k] >= 0), got)
   check('names the LightRAG and Python versions', typeof b.lightrag === 'string' && typeof b.python === 'string', got)
-  check('says whether an embeddings key was found', typeof b.keyFound === 'boolean', got)
+  check('says whether the node\'s embeddings element answers', typeof b.embeddings === 'object' && typeof b.embeddings.ready === 'boolean', got)
 } else {
   check('names the reason when not installed', typeof b.reason === 'string' && b.reason.length > 0, got)
 }

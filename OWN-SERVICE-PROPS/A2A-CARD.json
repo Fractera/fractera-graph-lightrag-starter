@@ -239,8 +239,13 @@
                 "chunks": 1,
                 "lightrag": "1.5.7",
                 "python": "3.12.15",
-                "embedModel": "text-embedding-3-small",
-                "keyFound": true,
+                "embedModel": "paraphrase-multilingual-MiniLM-L12-v2",
+                "embedDims": 384,
+                "embeddings": {
+                  "model": "paraphrase-multilingual-MiniLM-L12-v2",
+                  "dims": 384,
+                  "ready": true
+                },
                 "busy": false
               },
               "errors": {

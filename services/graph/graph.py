@@ -27,7 +27,8 @@ call of the element's doors starts Python for one operation and the process ends
 Exit code 0 — ok; 1 — a refusal named in the answer {"ok": false, "error", "detail"}; 2 — the element is set up wrong.
 The graph: <SERVICE_DATA_DIR>/lightrag/ (absolute, outside every build); a space: <SERVICE_DATA_DIR>/spaces/<space>/; the lock (one for
 all, it guards the memory of the machine too): <SERVICE_DATA_DIR>/lightrag.lock (the pid inside).
-OpenAI does one thing — the vectors (embeddings): the core's key first, then the element's own (node law 336).
+The vectors come from the node's own element embeddings (node step 626-5): texts in, vectors out, on this computer, no key; the model
+and the size are the ones it names. A graph counted by another model is set aside whole at the first run (see set_aside_other_model).
 """
 
 import asyncio
@@ -76,13 +77,12 @@ LOCK_WAIT = 120  # seconds one call waits for the call before it
 # tiktoken reads this at call time; scripts/graph-python.mjs put the encodings there, so a run never downloads them.
 os.environ.setdefault("TIKTOKEN_CACHE_DIR", str(ELEMENT_DIR / ".uv" / "tiktoken"))
 
-# The vectors of a live graph cannot change model or size: every stored vector would have to be made again.
-EMBED_MODEL = "text-embedding-3-small"
-EMBED_DIMS = 1536
-# Any OpenAI-compatible embeddings address (a local model, a probe). The OpenAI key goes to OpenAI only; another address gets
-# its own GRAPH_EMBED_KEY, or no key at all.
-OPENAI_URL = "https://api.openai.com/v1"
-EMBED_URL = (ENV.get("GRAPH_EMBED_URL") or OPENAI_URL).rstrip("/")
+# 626-5: THE VECTORS COME FROM THE NODE'S OWN ELEMENT embeddings (paraphrase-multilingual-MiniLM-L12-v2, 384 numbers, on this computer, no
+# key). Its address is the installer's answer (EMBEDDINGS_URL, the neighbour rule); its doors take the node key every element shares
+# (SETTINGS_SECRET, sent as X-Node-Key). The model and the size are asked at every run — one call on this computer.
+# 🪦 Until 626 OpenAI counted them (text-embedding-3-small, 1536) with the core's key or the element's own.
+EMBEDDINGS_URL = (ENV.get("EMBEDDINGS_URL") or "").strip().rstrip("/")
+NODE_KEY = ENV.get("SETTINGS_SECRET", "")
 MODES = {"local", "global", "hybrid", "naive", "mix"}
 NO_RESULT = ("Query returned no results", "No relevant document chunks found.")  # lightrag 1.5.7, aquery_data
 LIMITS = {"chunks": 2000, "entities": 5000, "relationships": 10000, "text": 50000}
@@ -100,15 +100,44 @@ NOTICE = ("Items with origin external-study describe a product studied by revers
           "works, never this node's code, pages, routes or data.")
 
 
-def openai_key() -> str:
-    # Node law 336: the core's key first, otherwise the element's own; read at every run, so a key saved on the node's screen works
-    # from the next call.
-    files = ([NODE_DIR / ".env.local"] if (NODE_DIR / "WEB4-ITEMS").is_dir() else []) + [ELEMENT_DIR / ".env.local"]
-    for f in files:
-        key = read_env_file(f).get("OPENAI_API_KEY", "")
-        if key:
-            return key
-    return os.environ.get("OPENAI_API_KEY", "")
+def embeddings_status() -> dict:
+    """{model, dims, ready, ...} as the node's embeddings element names them; raises with the reason (no address, no answer)."""
+    if not EMBEDDINGS_URL:
+        raise RuntimeError("EMBEDDINGS_URL is empty — the node has no embeddings element (npm run services:install)")
+    import urllib.request
+    request = urllib.request.Request(f"{EMBEDDINGS_URL}/api/embed-status", headers={"X-Node-Key": NODE_KEY})
+    try:
+        with urllib.request.urlopen(request, timeout=10) as reply:
+            return json.loads(reply.read().decode("utf-8"))
+    except Exception as error:
+        raise RuntimeError(f"the embeddings element did not answer: {error}") from error
+
+
+def set_aside_other_model(model: str, dims: int) -> None:
+    """626-5: a graph counted by another model is set aside WHOLE — `lightrag/` and `spaces/` renamed `<name>.<old model>-<date>/` beside
+    them, never read again, nothing deleted (the owner, 2026-11-02: «Нет, начать с чистого листа») — and the new graph starts empty.
+    The model is recorded in <SERVICE_DATA_DIR>/embed-model.json; a graph on the disk with no record was counted by OpenAI (before 626).
+    Called under the lock, so two runs never move the same folder."""
+    mark = DATA / "embed-model.json"
+    try:
+        recorded = json.loads(mark.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        recorded = None
+    if isinstance(recorded, dict) and recorded.get("model") == model and recorded.get("dims") == dims:
+        return
+    old = recorded.get("model") if isinstance(recorded, dict) else None
+    tag = (re.sub(r"[^a-z0-9]+", "-", str(old).lower()).strip("-") or "other") if old else "openai"
+    day = time.strftime("%Y-%m-%d")
+    for name in ("lightrag", "spaces"):
+        folder = DATA / name
+        if not folder.exists():
+            continue
+        target, n = DATA / f"{name}.{tag}-{day}", 2
+        while target.exists():
+            target, n = DATA / f"{name}.{tag}-{day}-{n}", n + 1
+        folder.rename(target)
+    DATA.mkdir(parents=True, exist_ok=True)
+    mark.write_text(json.dumps({"model": model, "dims": dims}) + "\n", encoding="utf-8")
 
 
 def text(value) -> bool:
@@ -260,10 +289,14 @@ def status() -> int:
             counts["chunks"] = len(json.loads(chunks_file.read_text(encoding="utf-8")))
     except Exception as error:  # a file being written at this instant
         return refusal("busy", str(error)[:200])
+    try:
+        e = embeddings_status()
+        embeddings = {"model": e.get("model"), "dims": e.get("dims"), "ready": bool(e.get("ready"))}
+    except RuntimeError as error:
+        embeddings = {"ready": False, "error": str(error)[:200]}
     return answer({
-        "ok": True, **counts, "lightrag": importlib.metadata.version("lightrag-hku"), "embedModel": EMBED_MODEL,
-        "keyFound": bool(openai_key()) if EMBED_URL == OPENAI_URL else True,
-        "busy": bool(LOCK_FILE.exists()),
+        "ok": True, **counts, "lightrag": importlib.metadata.version("lightrag-hku"), "embedModel": embeddings.get("model"),
+        "embedDims": embeddings.get("dims"), "embeddings": embeddings, "busy": bool(LOCK_FILE.exists()),
     })
 
 
@@ -276,33 +309,36 @@ async def work(op: str, request: dict) -> int:
     session = aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=60))
 
     async def embed(texts: list, **_kwargs):
-        key = openai_key() if EMBED_URL == OPENAI_URL else ENV.get("GRAPH_EMBED_KEY", "")
-        if EMBED_URL == OPENAI_URL and not key:
-            raise RuntimeError("no OpenAI key: save it on the node's screen, or in this element's .env.local")
-        async with session.post(f"{EMBED_URL}/embeddings", headers={"Authorization": f"Bearer {key}"} if key else {},
-                                json={"model": EMBED_MODEL, "input": list(texts)}) as reply:
-            body = await reply.json(content_type=None)
-            if reply.status == 401 and EMBED_URL == OPENAI_URL:
-                raise RuntimeError("OpenAI refused the key (401): replace it on the node's screen")
-            if reply.status != 200:
-                error = body.get("error") if isinstance(body, dict) else None
-                message = error.get("message", "") if isinstance(error, dict) else str(body)
-                raise RuntimeError(f"embeddings answered {reply.status}: {message[:200]}")
+        vectors = []
+        for start in range(0, len(texts), 256):  # the door takes at most 256 texts a call
+            async with session.post(f"{EMBEDDINGS_URL}/api/embed", headers={"X-Node-Key": NODE_KEY},
+                                    json={"texts": list(texts[start:start + 256])}) as reply:
+                body = await reply.json(content_type=None)
+                if reply.status != 200:
+                    reason = body.get("reason", "") if isinstance(body, dict) else str(body)
+                    raise RuntimeError(f"embeddings answered {reply.status}: {str(reason)[:200]}")
+            vectors += body["vectors"]
         COUNTS["embedCalls"] += 1
         COUNTS["embedTexts"] += len(texts)
-        rows = sorted(body["data"], key=lambda row: row["index"])
-        return np.array([row["embedding"] for row in rows], dtype=np.float32)
+        return np.array(vectors, dtype=np.float32)
 
     async def no_llm(*_args, **_kwargs):
         COUNTS["llmCalls"] += 1
         raise RuntimeError("the graph element calls no language model: send a ready graph, and keywords with a question")
 
-    WORK.mkdir(parents=True, exist_ok=True)
+    DATA.mkdir(parents=True, exist_ok=True)
     await take_lock()
     try:
+        model = embeddings_status()
+        if not model.get("model") or not isinstance(model.get("dims"), int):
+            raise RuntimeError("the embeddings element named no model")
+        set_aside_other_model(model["model"], model["dims"])
+        WORK.mkdir(parents=True, exist_ok=True)
         strict = {"cosine_better_than_threshold": request["threshold"]} if op == "query" and "threshold" in request else {}
+        # max_token_size stays 8192: LightRAG reads it as the limit for summarizing descriptions, and a smaller one would make it call a
+        # language model this element does not have; the embeddings element cuts every text at its model's 128 tokens itself.
         rag = LightRAG(working_dir=str(WORK), llm_model_func=no_llm,
-                       embedding_func=EmbeddingFunc(embedding_dim=EMBED_DIMS, max_token_size=8192, func=embed), **strict)
+                       embedding_func=EmbeddingFunc(embedding_dim=model["dims"], max_token_size=8192, func=embed), **strict)
         await rag.initialize_storages()
         try:
             if op == "insert":
@@ -358,8 +394,8 @@ def main() -> int:
         body, code = asyncio.run(work(op, shaped))
     except Exception as error:  # what the store kept is kept; the caller sees the reason
         reason = str(error)
-        # LightRAG wraps the embedding failure in its own words; the two causes a person can fix get their own names.
-        kind = "key_refused" if "OpenAI refused the key" in reason else "no_key" if "no OpenAI key" in reason else op
+        # LightRAG wraps the embedding failure in its own words; the cause a person can fix gets its own name.
+        kind = "embeddings_unavailable" if ("embeddings" in reason and ("did not answer" in reason or "answered" in reason or "EMBEDDINGS_URL" in reason or "named no model" in reason)) else op
         return refusal(kind, reason[:300])
     return answer(body, code)
 

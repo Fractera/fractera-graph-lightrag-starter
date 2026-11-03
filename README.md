@@ -29,8 +29,10 @@ merges it with your commits, and the element's agent resolves a conflict.
 
 **What it gives.** A knowledge graph of the node on LightRAG 1.5.7. An element stores what it learned as a ready graph (entities,
 the links between them and the text fragments they come from) and later finds them by keywords. No language model runs: the caller
-brings the graph and the keywords, and OpenAI only computes vectors (`text-embedding-3-small`, 1536 numbers). The key is the core's
-`OPENAI_API_KEY` first, then this element's own, read at every call.
+brings the graph and the keywords, and the vectors are counted on this computer by the node's own element **embeddings**
+(`paraphrase-multilingual-MiniLM-L12-v2`, 384 numbers, no key; node step 626-5). The model and its size are asked from it at every call;
+a graph counted by another model is set aside whole at the first call (`lightrag/` and `spaces/` renamed `<name>.<old model>-<date>/`,
+nothing deleted) and the new graph starts empty. Until node step 626 OpenAI counted them (`text-embedding-3-small`, 1536).
 
 **How it runs.** One operation per call (owner 2026-10-22: «На каждый вызов (Рекомендую)»). There is no resident graph process:
 each call starts Python for one operation (about 2 s, about 200 MB while it lasts) and the process ends with it. Calls take turns:
@@ -122,8 +124,9 @@ await fetch(`${base}/api/graph-query`, { method: 'POST', headers, body: JSON.str
 
 Modes: `local` finds entities by `ll_keywords`, `global` finds links by `hl_keywords`, `hybrid` does both, `mix` adds the fragments
 closest to the question, `naive` searches fragments only and needs no keywords. `GET /api/graph-status` answers `{ installed,
-entities, relationships, chunks, lightrag, python, embedModel, keyFound, busy }`. Refusals: 400 `bad_request` (the reason names the
-field) · 401 `bad_key` · 503 `not_installed`, `no_key` or `busy` · 502 `key_refused` (OpenAI refused the key) or `graph_failed`.
+entities, relationships, chunks, lightrag, python, embedModel, embedDims, embeddings, busy }`. Refusals: 400 `bad_request` (the reason
+names the field) · 401 `bad_key` · 503 `not_installed`, `embeddings_unavailable` (the node's embeddings element does not answer) or
+`busy` · 502 `graph_failed`.
 
 **When a change reaches it.** Data at once: every call reads the files. The code of the doors and of the page after a rebuild
 (Build, Deployments). The Python part: the first build installs it; a new lock is installed by the next build.
@@ -143,7 +146,11 @@ same graph again is safe, because names and fragment hashes are its keys. It dra
 run at a time; 401 without the node key. Node step 590-1 (2026-10-25, real OpenAI vectors): on an empty copy of the graph an item without
 `file_path` comes back `origin: node` with no `notice`, an item of a study `origin: external-study` with the `notice`, `file_path: 5` is
 refused naming the field; the live study of TinyLaunch (19 entities, 30 relationships, 3 chunks) was sent again with its mark — the
-counts stayed the same and every item came back `external-study`. With real OpenAI vectors it is not measured yet: on 2026-10-22 OpenAI refused the node's key.
+counts stayed the same and every item came back `external-study`. With real OpenAI vectors it is not measured yet: on 2026-10-22 OpenAI refused the node's key. Node step 626-5 (2026-11-03, the node's own vectors, no OpenAI key anywhere): the example above stored with `llmCalls: 0` and found
+again (`found: true`, both entities, the link, the chunk); «Fix a leaking kitchen faucet» with `threshold: 0.5` → `found: false`, the right
+question with the same threshold → found; a graph of the OpenAI layout set aside whole as `lightrag.openai-<date>/` and
+`spaces.openai-<date>/` with every file unchanged, the new vector files hold 384 numbers; `embeddings` stopped → 503
+`embeddings_unavailable` with the reason, `graph-status` still counts.
 
 # fractera-native-item-starter
 

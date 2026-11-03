@@ -21,7 +21,7 @@ type Status = {
   lightrag?: string
   python?: string
   embedModel?: string
-  keyFound?: boolean
+  embeddings?: { ready?: boolean; error?: string }
 }
 type Entity = { entity_name: string; entity_type?: string; description?: string }
 type Link = { src_id: string; tgt_id: string; description?: string }
@@ -53,8 +53,7 @@ export function GraphSearch({ lang, ui }: { lang: string; ui: GraphSearchUi }) {
   }, [lang])
 
   const explain = (code: unknown, reason: unknown) => {
-    if (code === "no_key") return ui.noKey
-    if (code === "key_refused") return ui.keyRefused
+    if (code === "embeddings_unavailable") return ui.noEmbeddings
     if (code === "not_installed") return ui.notInstalled
     if (code === "busy") return ui.busy
     return fill(ui.failed, { reason: typeof reason === "string" ? reason : "" })
@@ -114,7 +113,7 @@ export function GraphSearch({ lang, ui }: { lang: string; ui: GraphSearchUi }) {
             <Small data-block="oou5g" className="mt-3 text-muted-foreground">
               {status ? fill(ui.versions, { lightrag: status.lightrag, python: status.python, embedModel: status.embedModel }) : ui.loading}
             </Small>
-            {status && status.keyFound === false && <Small data-block="g8bew" className="mt-2">{ui.noKey}</Small>}
+            {status && status.embeddings?.ready === false && <Small data-block="g8bew" className="mt-2">{ui.noEmbeddings}</Small>}
           </>
         )}
       </div>

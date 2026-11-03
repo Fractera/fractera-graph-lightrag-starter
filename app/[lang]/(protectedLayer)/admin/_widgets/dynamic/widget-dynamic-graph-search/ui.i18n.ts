@@ -9,8 +9,7 @@ export type GraphSearchUi = {
   /** {lightrag} {python} {embedModel} */
   versions: string
   notInstalled: string
-  noKey: string
-  keyRefused: string
+  noEmbeddings: string
   busy: string
   unreachable: string
   searchTitle: string
@@ -33,10 +32,9 @@ const DICT: Record<string, GraphSearchUi> = {
     entities: 'Entities',
     relationships: 'Links',
     chunks: 'Fragments',
-    versions: 'LightRAG {lightrag} on Python {python}. Vectors are computed by {embedModel}.',
+    versions: 'LightRAG {lightrag} on Python {python}. Vectors are counted on this computer by {embedModel}.',
     notInstalled: 'The Python part of the graph is not installed on this computer, so the graph cannot store or search anything yet.',
-    noKey: 'There is no OpenAI key. The graph needs it to compute vectors: add it on the node\'s «Environment variables» page.',
-    keyRefused: 'OpenAI refused the key (401). Replace it on the node\'s «Environment variables» page, then search again.',
+    noEmbeddings: 'The node\'s embeddings element does not answer, and the graph counts no vector without it. It starts with the node; if it stays silent, its own page names the reason.',
     busy: 'The graph is busy with another call. Try again in a moment.',
     unreachable: 'The graph did not answer. The rest of the page still works; try again in a minute.',
     searchTitle: 'Search the graph',
@@ -55,10 +53,9 @@ const DICT: Record<string, GraphSearchUi> = {
     entities: 'Сущности',
     relationships: 'Связи',
     chunks: 'Фрагменты',
-    versions: 'LightRAG {lightrag} на Python {python}. Векторы считает {embedModel}.',
+    versions: 'LightRAG {lightrag} на Python {python}. Векторы считает на этом компьютере {embedModel}.',
     notInstalled: 'На этом компьютере не установлена Python-часть графа, поэтому он пока ничего не хранит и не ищет.',
-    noKey: 'Нет ключа OpenAI. Без него граф не считает векторы: добавьте ключ на странице узла «Переменные окружения».',
-    keyRefused: 'OpenAI отклонил ключ (401). Замените его на странице узла «Переменные окружения» и повторите поиск.',
+    noEmbeddings: 'Элемент embeddings узла не отвечает, а без него граф не считает векторы. Он запускается вместе с узлом; если молчит, причину покажет его собственная страница.',
     busy: 'Граф занят другим вызовом. Повторите через минуту.',
     unreachable: 'Граф не ответил. Остальная страница работает, попробуйте через минуту.',
     searchTitle: 'Поиск по графу',
