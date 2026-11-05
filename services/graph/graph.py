@@ -94,7 +94,10 @@ COUNTS = {"llmCalls": 0, "embedCalls": 0, "embedTexts": 0}
 FILE_PATH_MAX = 300
 # SPACE (node step 596-1): the name of a caller's own store. Lower-case latin, digits and dashes — it becomes a folder name, so
 # nothing that could climb out of <SERVICE_DATA_DIR>/spaces/ is accepted.
-SPACE = re.compile(r"^[a-z][a-z0-9-]{0,31}$")
+# 654-4: and an element's own space — `el-<element id>` or `el-<element id>.<name>` (the doors put it in from the caller's key,
+# lib/graph/whose.mjs); one dot at most, between two non-empty parts, so no name is `..` or climbs anywhere.
+SPACE = re.compile(r"^(?:[a-z][a-z0-9-]{0,31}|el-[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z][a-z0-9-]{0,31})?)$")
+SPACE_RULE = "^[a-z][a-z0-9-]{0,31}$, or an element's el-<id>[.<name>]"
 EXTERNAL = re.compile(r"external-study:([A-Za-z0-9._-]+)")
 NOTICE = ("Items with origin external-study describe a product studied by reverse engineering ({tasks}): a source to learn how it "
           "works, never this node's code, pages, routes or data.")
@@ -149,8 +152,8 @@ def store_of(body):
     name = body.get("space") if isinstance(body, dict) else None
     if name is None:
         return WORK, None
-    if not isinstance(name, str) or not SPACE.match(name):
-        return None, "space must match ^[a-z][a-z0-9-]{0,31}$ — the name of the caller's own store"
+    if not isinstance(name, str) or not SPACE.fullmatch(name):
+        return None, f"space must match {SPACE_RULE} — the name of the caller's own store"
     return DATA / "spaces" / name, None
 
 
@@ -390,6 +393,11 @@ def main() -> int:
     shaped = shape_graph(request) if op == "insert" else shape_query(request)
     if isinstance(shaped, str):
         return refusal("request", shaped)
+    # 654-4: a question to a space nobody has written into is answered «nothing», and no folder is made for it — a read never creates
+    # a store (✗ 2026-11-05 on the owner's node: an empty `spaces/memory` was left by a query).
+    if op == "query" and request.get("space") is not None and not WORK.exists():
+        return answer({"ok": True, "found": False, "message": "no such space yet", "entities": [], "relationships": [], "chunks": [],
+                       **COUNTS}, 0)
     try:
         body, code = asyncio.run(work(op, shaped))
     except Exception as error:  # what the store kept is kept; the caller sees the reason

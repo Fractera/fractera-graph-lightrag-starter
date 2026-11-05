@@ -170,9 +170,16 @@ backup and nothing else. How to build a copy and put it on the schedule — skil
 LightRAG 1.5.7 lives here, one operation per call (owner 2026-10-22: «На каждый вызов (Рекомендую)»): there is no resident graph
 process; each call of the doors runs `services/graph/graph.py` (~2 s, ~200 MB while it lasts), one at a time (`lib/graph/run.mjs`).
 No language model is ever called: callers bring a ready graph and their own keywords, and OpenAI only computes the vectors. Doors —
-`POST /api/graph-insert`, `POST /api/graph-query`, `GET /api/graph-status` (node key); the architect's page — `/<lang>/admin/graph`.
+`POST /api/graph-insert`, `POST /api/graph-query`, `GET /api/graph-status` (the node data key `X-Data-Secret` or an element's own key
+`X-Element-Key`, node step 654-4); the architect's page — `/<lang>/admin/graph`.
 Before you change any of it, read the README, «Using the graph». The embedding model of a live graph is never changed on your own:
 every stored vector would have to be made again — the node owner decides.
+
+### Whose spaces — each element its own (node step 654-4)
+
+A call with an element's own key works only in that element's spaces: `el-<id>` without `space`, `el-<id>.<name>` with one; it never
+reaches the shared graph or another's space. The node data key works on the shared graph and on every space by its full name, and never
+writes under `el-`; `X-Node-Key` opens the three doors no more (`lib/graph/whose.mjs`). README «An element's own space — and the keys».
 
 ## 12. Evolution
 

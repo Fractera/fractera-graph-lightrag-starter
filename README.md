@@ -45,16 +45,18 @@ other caller.
 | `services/graph/requirements.in`, `requirements.txt` | the one pinned package (`lightrag-hku==1.5.7`) and its generated lock (`npm run graph:python -- --lock`) |
 | `services/graph/graph.py` | the graph: `insert`, `query`, `status`; JSON in on stdin, one line out |
 | `lib/graph/run.mjs` | the queue of runs and the answers of the doors |
-| `app/api/graph-insert`, `graph-query`, `graph-status` | the doors for the other elements of the node (header `X-Node-Key`) |
+| `app/api/graph-insert`, `graph-query`, `graph-status` | the doors for the node and its elements (header `X-Data-Secret` — the node, `X-Element-Key` — an element; node step 654-4) |
+| `lib/graph/whose.mjs`, `lib/element-key.mjs` | who calls and in whose space (654-4); the element key, word for word the stores' copy |
 | `app/[lang]/(protectedLayer)/admin/_pages/graph` | the page «Knowledge graph» for the architect: the size of the graph and a search |
 | `<SERVICE_DATA_DIR>/lightrag/` | the graph itself (an absolute path, outside every build) |
 
-**How an element uses it.** On the machine's loopback, with the node key:
+**How an element uses it.** On the machine's loopback, with its own key `X-Element-Key` (node step 654-4 — see «An element's own space»;
+the node's own callers, the core and the deep memory, send the node data key `X-Data-Secret` instead):
 
 ```js
 // The graph's port: ask the node (npm run a2a -- card graph), never write the number into code.
 const base = 'http://127.0.0.1:24689'
-const headers = { 'content-type': 'application/json', 'X-Node-Key': process.env.SETTINGS_SECRET }
+const headers = { 'content-type': 'application/json', 'X-Element-Key': process.env.ELEMENT_KEY }
 
 // Store what you learned. Every entity and link names, by source_id, a fragment of the same call.
 await fetch(`${base}/api/graph-insert`, { method: 'POST', headers, body: JSON.stringify({
@@ -97,7 +99,7 @@ works, never this node's code, pages, routes or data.» The owner of the node, 2
 own that the shared graph never sees, and the other way round. Without `space` the request works on the shared graph exactly as before.
 The node's deep memory keeps what a person said in `space: "memory"`: the skills of other projects and the studied products in the shared
 graph never come back as facts of that person's life. A bad name is refused naming the field (400 `bad_request`); the lock is one for all
-spaces — one run of the graph at a time. `GET /api/graph-status` counts the shared graph only.
+spaces — one run of the graph at a time. `GET /api/graph-status` with the node data key counts the shared graph only.
 
 ```js
 await fetch(`${base}/api/graph-insert`, { method: 'POST', headers, body: JSON.stringify({ space: 'memory', chunks: […], entities: […], relationships: […] }) })
@@ -107,6 +109,23 @@ await fetch(`${base}/api/graph-query`, { method: 'POST', headers, body: JSON.str
 Proven (596-1): an insert into a probe space left the shared graph at 91 entities, 94 relationships, 53 chunks; the space held its 2
 entities and 1 relationship; a query of the shared graph did not return them (it returned its own nearest entities), the same query with
 the space did; `space: "Bad/Name"` — 400.
+
+**An element's own space — and the keys (node step 654-4).** The owner of the node, 2026-11-05: «объектное хранилище должно быть
+обновлено не только для использования глубинной памятью но и для использования просто внутри элемента» — the same for every store.
+- **The keys.** The three doors open with the node data key `X-Data-Secret` (the node: the core, the deep memory, the main agent) or an
+  element's own key `X-Element-Key` (`<element id>.<mac>`, written to the element by the node installer). The node key `X-Node-Key` opens
+  them no more: every custom element holds it, so a graph that took it would be open to every element. A key that does not match — 401.
+- **An element's space.** With its own key an element never reaches the shared graph: without `space` it works on `el-<its id>`, with
+  `space: "<name>"` on `el-<its id>.<name>` — the dot is in no element id and in no name, so no space of one element is another's. Its
+  `memory-root` is its own `el-<id>.memory-root`, never the memory's. A name beginning `el-` from an element is refused (400
+  `reserved-prefix`): the graph adds the prefix itself. `graph-status` with its key counts its own spaces only (`spaces: [{ space, … }]`,
+  `null` for the home space).
+- **The node** works as before on the shared graph and on any space by its full name (`el-root.proof`), and never writes under `el-`
+  (400 `reserved-prefix`): a record of the node there would be found by an element as its own.
+- A question to a space nobody wrote into answers `found: false` and makes no folder.
+- **What it does not do:** every space lies in this element's folder on the disk; all elements run as one user of the computer, and an
+  element's agent is held off the neighbours' files by the node's boundary hook on named paths, not by the operating system. An entity
+  cannot be deleted yet — a space folder is removed by the architect.
 
 **How close is close enough — `threshold` (node step 598-2).** A query may carry `"threshold": <0…1>` — LightRAG's own
 `cosine_better_than_threshold` for this one query: the vector stores return only entities, links and fragments at least this close.
@@ -143,7 +162,7 @@ same graph again is safe, because names and fragment hashes are its keys. It dra
 `graph-python.mjs --soft`. The data of the graph: `<SERVICE_DATA_DIR>/lightrag/`.
 
 **Proven by.** Node steps 540-3 … 540-5: a ready graph stored and found again with no language model call, on stand-in vectors; one
-run at a time; 401 without the node key. Node step 590-1 (2026-10-25, real OpenAI vectors): on an empty copy of the graph an item without
+run at a time; 401 without the node key (since 654-4 — without the node data key or an element's own key). Node step 590-1 (2026-10-25, real OpenAI vectors): on an empty copy of the graph an item without
 `file_path` comes back `origin: node` with no `notice`, an item of a study `origin: external-study` with the `notice`, `file_path: 5` is
 refused naming the field; the live study of TinyLaunch (19 entities, 30 relationships, 3 chunks) was sent again with its mark — the
 counts stayed the same and every item came back `external-study`. With real OpenAI vectors it is not measured yet: on 2026-10-22 OpenAI refused the node's key. Node step 626-5 (2026-11-03, the node's own vectors, no OpenAI key anywhere): the example above stored with `llmCalls: 0` and found

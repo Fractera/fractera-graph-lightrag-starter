@@ -127,7 +127,7 @@
               "protocol": "http",
               "method": "POST",
               "path": "/api/graph-insert",
-              "key": "node-key",
+              "key": "X-Element-Key",
               "input": {
                 "chunks": [
                   {
@@ -178,7 +178,7 @@
               "protocol": "http",
               "method": "POST",
               "path": "/api/graph-query",
-              "key": "node-key",
+              "key": "X-Element-Key",
               "input": {
                 "query": "Who researches quantum computing?",
                 "mode": "mix",
@@ -229,7 +229,7 @@
               "protocol": "http",
               "method": "GET",
               "path": "/api/graph-status",
-              "key": "node-key",
+              "key": "X-Element-Key",
               "input": {},
               "output": {
                 "ok": true,
