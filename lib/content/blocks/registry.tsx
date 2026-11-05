@@ -9,6 +9,7 @@ import { Card } from '@/components/blocks/block-card'
 import { Flow } from '@/components/blocks/block-flow'
 import { Metrics } from '@/components/blocks/block-metrics'
 import { SectionSeparator } from '@/components/blocks/block-section-separator'
+import { AccessMap } from '@/components/blocks/block-access-map'
 import type { Block } from './types'
 import { TEXT_SET } from '@/lib/content/text-set'
 
@@ -30,6 +31,7 @@ export const BLOCK_SET: BlockSet = {
   'block-flow': Flow,
   'block-metrics': Metrics,
   'block-section-separator': SectionSeparator,
+  'block-access-map': AccessMap,
 }
 
 /** Нарисовать список блоков по порядку; `keyPrefix` держит ключи уникальными между вызовами на одной странице. */
