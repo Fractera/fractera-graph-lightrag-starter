@@ -45,6 +45,8 @@ function SectionView({ section }: { section: Section }) {
     case "files": return <Hood section={section} />
     case "talk": return <Agent section={section} />
     case "agent": return <Agent section={section} />
+    // 662-2: «your own builder» — the element's Claude Code agent and its Telegram bot, in the muted band of `agent`.
+    case "builder": return <Agent section={section} />
     case "turn-on": return <Steps section={section} />
     case "connect": return <Connect section={section} />
     case "hood": return <Hood section={section} />

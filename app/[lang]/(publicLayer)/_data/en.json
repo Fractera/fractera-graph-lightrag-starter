@@ -3,42 +3,436 @@
   "description": "The node's agents keep what they learn and find it again by meaning. Knowledge outlives the conversation, and an agent reads a short extract instead of whole files.",
   "keywords": "knowledge graph, LightRAG, agent memory, graph RAG, Fractera node",
   "blocks": [
-    {"kind": "widget-static-graph-landing", "bid": "gwl01"},
-    {"kind": "block-hero-centered", "pill": "Knowledge graph · LightRAG", "title": "Your agents stop forgetting what they learned", "description": "The graph keeps the knowledge of every element of your node: what was studied, how it connects and where it came from. Any agent finds what it needs with one question instead of rereading old files and conversations.", "cta": {"label": "Connect your element", "href": "#connect"}, "secondary": {"label": "Questions and answers", "href": "#faq"}, "bid": "gk001"},
-    {"kind": "block-section-head", "id": "route", "title": "How it works", "bid": "gsr01"},
-    {"kind": "text-h4", "text": "An agent saves", "bid": "gr101"},
-    {"kind": "text-p", "text": "An element hands the graph what it learned: the things, the links between them and a short text saying where it came from.", "bid": "gr102"},
-    {"kind": "text-h4", "text": "The graph connects", "bid": "gr201"},
-    {"kind": "text-p", "text": "New knowledge settles next to what is already known, and the same thing found in different analyses becomes one point.", "bid": "gr202"},
-    {"kind": "text-h4", "text": "Any agent asks", "bid": "gr301"},
-    {"kind": "text-p", "text": "For a question in plain words the graph returns a short context: the right things, their links and the source.", "bid": "gr302"},
-    {"kind": "text-small", "text": "Only building costs tokens; reading calls no language model.", "bid": "grs01"},
-    {"kind": "block-section-head", "id": "pain", "title": "Without a shared memory every conversation starts from zero", "bid": "gk002"},
-    {"kind": "text-p", "text": "An agent studied someone else's site, worked out how its cart works and explained it all to you. The conversation closed and the finding was gone. A week later another agent does the same work again, and you pay for the tokens again.", "bid": "gk003"},
-    {"kind": "block-section-head", "id": "solves", "title": "What changes for you", "bid": "gss01"},
-    {"kind": "text-table", "head": ["Without it", "With the graph"], "rows": [["A finding vanishes when the conversation closes", "What an agent finds goes into the graph and survives the end of the conversation, a restart of the node and a change of agent"], ["Search finds only the same words", "Ask in plain words: the graph finds the text that matches and everything connected to it, down to an item of your product quiz"], ["An agent rereads reports hundreds of megabytes long", "It gets a short extract made for its question"], ["Each element keeps what it learned to itself", "What one element puts into the shared graph is there for all the others at once"]], "bid": "gst01"},
-    {"kind": "block-section-head", "id": "what-is-a-graph", "title": "What a knowledge graph is", "bid": "gk005"},
-    {"kind": "text-p", "text": "Picture a map where the towns are things and the roads are the links between them. A site, its search, the request address that search uses and the item of your quiz that grew out of it are points on that map, joined by labelled lines. The graph remembers both the points and the roads between them.", "bid": "gk006"},
-    {"kind": "block-section-head", "id": "cost", "title": "Where the tokens go", "bid": "gk008"},
-    {"kind": "block-metrics", "items": [{"value": "Once", "label": "you pay in tokens: when knowledge is turned into things and links"}, {"value": "0", "label": "language model calls when reading: the agent gets a ready context"}, {"value": "6,000 · 8,000", "label": "tokens of context on things and on links reach the agent, at most"}], "bid": "gk009"},
-    {"kind": "text-small", "text": "Only building costs much: a model reads the material and picks out the things and the links between them. Either LightRAG does it when it writes a document, or the element agent that has already studied the material hands the graph ready links. Reading is almost free: the question becomes an embedding, and the graph finds the nearest things and links and returns a short context without calling a language model. The agent passes the keywords for the graph search itself. You pay once to build and read many times for next to nothing.", "bid": "gk010"},
-    {"kind": "block-section-head", "id": "spaces", "title": "Whose graph it is", "bid": "gsp01"},
-    {"kind": "block-access-map", "outer": {"title": "The main agent of the node", "text": "Asks every graph space of every element and sees whose each answer is."}, "spaces": [{"title": "Mom's element", "text": "Her facts and links in her element's own space."}, {"title": "Son's element", "text": "His own spaces, opened only with his element's key."}, {"title": "Your site", "text": "Its own spaces, its own answers."}], "between": "Each element opens the graph with its own key, and one space never sees the points and roads of another.", "bid": "gsp02"},
-    {"kind": "text-p", "text": "An element works only in its own spaces: el-<its id>, and el-<its id>.<name> for one it names. The deep memory keeps each element's facts the same way. The shared graph with the skills base and the studied products is never reached with an element's key.", "bid": "gsp03"},
-    {"kind": "text-p", "text": "A question of an element goes to its own space. The main agent, with the node's data key, asks every space and sees whose each answer is.", "bid": "gsp04"},
-    {"kind": "text-p", "text": "The graph keeps the doors apart, not the disk: every space lies in this element's folder on your computer, and all elements run as one user of it.", "bid": "gsp05"},
-    {"kind": "block-section-head", "id": "your-computer", "title": "Your graph on your computer", "bid": "gk011"},
-    {"kind": "text-p", "text": "The graph runs inside the node on your computer, and its data sits in the node's folder. Each element reads and adds to its own spaces through the graph's doors with its own key; the core and the deep memory use the node's data key. When you need to, you can connect your own tools to the same doors.", "bid": "gk012"},
-    {"kind": "block-cards", "title": "Where the graph helps", "cols": 3, "blockKey": "uses", "children": [{"kind": "block-card", "children": [{"kind": "text-h3", "text": "Studying other products"}, {"kind": "text-p", "text": "An agent works out how a feature of someone else's site is built and writes into the graph the site, the feature, the requests behind it and the quiz item that grew out of it. The finding does not vanish with the conversation."}]}, {"kind": "block-card", "children": [{"kind": "text-h3", "text": "Large collections of knowledge"}, {"kind": "text-p", "text": "Collections of skills, MCP servers and any set where it matters not only what is in it but how one thing relates to another. The graph keeps them in order and finds what you need by meaning."}]}, {"kind": "block-card", "children": [{"kind": "text-h3", "text": "The memory of all the node's agents"}, {"kind": "text-p", "text": "Everything that happened in the agents' lives in one place: what happened and when, which element, node and partner it involves, which event was the cause and which the effect. Together it gives the whole picture of your project."}]}], "bid": "gk013"},
-    {"kind": "block-section-head", "id": "connect", "title": "Connect your element", "bid": "gsc01"},
-    {"kind": "text-p", "text": "Every element of the node already has its own key. Store what you learned as a ready graph and find it again with your own keywords:", "bid": "gsc02"},
-    {"kind": "text-code", "text": "// The graph's port: ask the node (npm run a2a -- card graph), never write the number into code.\nconst base = 'http://127.0.0.1:24689'\nconst headers = { 'content-type': 'application/json', 'X-Element-Key': process.env.ELEMENT_KEY }\n// Store what you learned. Every entity and link names, by source_id, a fragment of the same call.\nawait fetch(`${base}/api/graph-insert`, { method: 'POST', headers, body: JSON.stringify({\n  chunks: [{ content: 'The page /pricing takes payment through Stripe Checkout.', source_id: 'review-42' }],\n  entities: [\n    { entity_name: 'Pricing page', entity_type: 'page', description: 'The page /pricing of example.com.', source_id: 'review-42' },\n    { entity_name: 'Stripe Checkout', entity_type: 'library', description: 'The hosted payment page of Stripe.', source_id: 'review-42' },\n  ],\n  relationships: [\n    { src_id: 'Pricing page', tgt_id: 'Stripe Checkout', description: 'The pricing page takes payment through Stripe Checkout.',\n      keywords: 'payment, checkout', source_id: 'review-42' },\n  ],\n}) })\n// Find it again with your own keywords: ll_keywords look for entities, hl_keywords for links.\nconst answer = await fetch(`${base}/api/graph-query`, { method: 'POST', headers, body: JSON.stringify({\n  query: 'How does the site take payments?', mode: 'mix', ll_keywords: ['payment page'], hl_keywords: ['payments'],\n}) }).then((r) => r.json())", "bid": "gsc03"},
-    {"kind": "text-p", "text": "The answer brings the entities, the links and the fragments they came from; when nothing relevant is there it says found: false. Add \"space\": \"<name>\" to keep another graph of your own.", "bid": "gsc04"},
-    {"kind": "block-section-head", "id": "hood", "title": "Under the hood", "bid": "gsh01"},
-    {"kind": "text-table", "head": ["Part", "What it does"], "rows": [["LightRAG 1.5.7", "Lives inside the element: Python managed by uv, one pinned package, installed into the element's own folder"], ["One operation per call", "Each call starts Python for one operation, about 2 seconds and 200 MB while it lasts, and runs take turns"], ["No language model", "The caller brings the graph and the keywords; the vectors are counted by the node's embeddings element, 384 numbers, no key"], ["Spaces", "space: \"<name>\" keeps a graph of its own in its own folder, and the shared graph never sees it"], ["Origin", "Knowledge of a studied product is marked external-study, so an agent never takes it for this node's code"], ["The lock", "Each element's own key in X-Element-Key opens its own spaces; the node's data key in X-Data-Secret opens all; the page «Knowledge graph» shows the architect its size and a search"]], "bid": "gsh02"},
-    {"kind": "block-section-head", "id": "faq", "title": "Questions and answers", "bid": "gsf01"},
-    {"kind": "block-faq", "title": "Questions and answers", "items": [{"q": "Do I need to install anything?", "a": "No. The element installs Python and LightRAG into its own folder, and nothing goes into the system."}, {"q": "Where is the data kept?", "a": "In the node's folder on your computer. The graph lives in the memory of its process, and the files on disk are its copy."}, {"q": "Can I connect to the graph from outside?", "a": "Yes. Today the node's elements use the graph through its doors with the node's key. You can connect your own tools to the same doors."}, {"q": "What is LightRAG?", "a": "An open-source library for search over a knowledge graph, from the LightRAG Team under the MIT license. The node's graph is built on it."}, {"q": "What if the graph gets very large?", "a": "The built-in storage is enough for the knowledge of one node. A graph of millions of things needs a database server, and this element does not set one up."}], "bid": "gk015"},
-    {"kind": "block-section-head", "id": "credits", "title": "Open source", "bid": "gsx01"},
-    {"kind": "text-p", "text": "Built by Fractera for the [Lagrix](https://lagrix.dev) protocol and for any web2 project whose agents need a shared memory. MIT license, the code is at [github.com/Fractera/fractera-graph-lightrag-starter](https://github.com/Fractera/fractera-graph-lightrag-starter).", "bid": "gxp01"}
+    {
+      "kind": "widget-static-graph-landing",
+      "bid": "gwl01"
+    },
+    {
+      "kind": "block-hero-centered",
+      "pill": "Knowledge graph · LightRAG",
+      "title": "Your agents stop forgetting what they learned",
+      "description": "The graph keeps the knowledge of every element of your node: what was studied, how it connects and where it came from. Any agent finds what it needs with one question instead of rereading old files and conversations.",
+      "cta": {
+        "label": "Connect your element",
+        "href": "#connect"
+      },
+      "secondary": {
+        "label": "Questions and answers",
+        "href": "#faq"
+      },
+      "bid": "gk001"
+    },
+    {
+      "kind": "block-section-head",
+      "id": "route",
+      "title": "How it works",
+      "bid": "gsr01"
+    },
+    {
+      "kind": "text-h4",
+      "text": "An agent saves",
+      "bid": "gr101"
+    },
+    {
+      "kind": "text-p",
+      "text": "An element hands the graph what it learned: the things, the links between them and a short text saying where it came from.",
+      "bid": "gr102"
+    },
+    {
+      "kind": "text-h4",
+      "text": "The graph connects",
+      "bid": "gr201"
+    },
+    {
+      "kind": "text-p",
+      "text": "New knowledge settles next to what is already known, and the same thing found in different analyses becomes one point.",
+      "bid": "gr202"
+    },
+    {
+      "kind": "text-h4",
+      "text": "Any agent asks",
+      "bid": "gr301"
+    },
+    {
+      "kind": "text-p",
+      "text": "For a question in plain words the graph returns a short context: the right things, their links and the source.",
+      "bid": "gr302"
+    },
+    {
+      "kind": "text-small",
+      "text": "Only building costs tokens; reading calls no language model.",
+      "bid": "grs01"
+    },
+    {
+      "kind": "block-section-head",
+      "id": "power",
+      "title": "On from the start",
+      "bid": "q0000"
+    },
+    {
+      "kind": "text-p",
+      "text": "This element starts with the node. The node holds the switch: the architect turns it off or on with a word to the main agent, or on the element's settings page in the core.",
+      "bid": "q0001"
+    },
+    {
+      "kind": "block-section-head",
+      "id": "pain",
+      "title": "Without a shared memory every conversation starts from zero",
+      "bid": "gk002"
+    },
+    {
+      "kind": "text-p",
+      "text": "An agent studied someone else's site, worked out how its cart works and explained it all to you. The conversation closed and the finding was gone. A week later another agent does the same work again, and you pay for the tokens again.",
+      "bid": "gk003"
+    },
+    {
+      "kind": "block-section-head",
+      "id": "solves",
+      "title": "What changes for you",
+      "bid": "gss01"
+    },
+    {
+      "kind": "text-table",
+      "head": [
+        "Without it",
+        "With the graph"
+      ],
+      "rows": [
+        [
+          "A finding vanishes when the conversation closes",
+          "What an agent finds goes into the graph and survives the end of the conversation, a restart of the node and a change of agent"
+        ],
+        [
+          "Search finds only the same words",
+          "Ask in plain words: the graph finds the text that matches and everything connected to it, down to an item of your product quiz"
+        ],
+        [
+          "An agent rereads reports hundreds of megabytes long",
+          "It gets a short extract made for its question"
+        ],
+        [
+          "Each element keeps what it learned to itself",
+          "What one element puts into the shared graph is there for all the others at once"
+        ]
+      ],
+      "bid": "gst01"
+    },
+    {
+      "kind": "block-section-head",
+      "id": "what-is-a-graph",
+      "title": "What a knowledge graph is",
+      "bid": "gk005"
+    },
+    {
+      "kind": "text-p",
+      "text": "Picture a map where the towns are things and the roads are the links between them. A site, its search, the request address that search uses and the item of your quiz that grew out of it are points on that map, joined by labelled lines. The graph remembers both the points and the roads between them.",
+      "bid": "gk006"
+    },
+    {
+      "kind": "block-section-head",
+      "id": "heart",
+      "title": "The heart of LightRAG",
+      "bid": "q0002"
+    },
+    {
+      "kind": "text-p",
+      "text": "LightRAG comes from the paper «LightRAG: Simple and Fast Retrieval-Augmented Generation» (Guo and co-authors, arXiv:2410.05779, October 2024). Its core is a graph inside the index itself: texts are taken apart into things and the links between them, and search walks that map instead of only matching pieces of text.",
+      "bid": "q0003"
+    },
+    {
+      "kind": "text-p",
+      "text": "It is known for dual-level retrieval: the low level finds particular things, the high level the themes and links that join them. New knowledge goes into the graph as it arrives, with no rebuild of the whole index.",
+      "bid": "q0004"
+    },
+    {
+      "kind": "text-p",
+      "text": "In the node the graph never calls a language model: the agent brings the things and links, and the node's own element embeddings counts the meaning.",
+      "bid": "q0005"
+    },
+    {
+      "kind": "block-flow",
+      "title": "How a search goes through the graph",
+      "steps": [
+        {
+          "title": "Keywords",
+          "text": "The agent brings a question and two sets of keywords: low-level ones for things, high-level ones for links and themes."
+        },
+        {
+          "title": "The nearest things and links",
+          "text": "Embeddings counts the keywords' meaning on this computer, and the graph finds the nearest things and links and takes their neighbours."
+        },
+        {
+          "title": "A short context",
+          "text": "The answer carries the things, their links and the text fragments they came from, with the source. No model is called."
+        }
+      ],
+      "bid": "q0006"
+    },
+    {
+      "kind": "block-section-head",
+      "id": "cost",
+      "title": "Where the tokens go",
+      "bid": "gk008"
+    },
+    {
+      "kind": "block-metrics",
+      "items": [
+        {
+          "value": "Once",
+          "label": "you pay in tokens: when knowledge is turned into things and links"
+        },
+        {
+          "value": "0",
+          "label": "language model calls when reading: the agent gets a ready context"
+        },
+        {
+          "value": "6,000 · 8,000",
+          "label": "tokens of context on things and on links reach the agent, at most"
+        }
+      ],
+      "bid": "gk009"
+    },
+    {
+      "kind": "text-small",
+      "text": "Only building costs much: a model reads the material and picks out the things and the links between them. Either LightRAG does it when it writes a document, or the element agent that has already studied the material hands the graph ready links. Reading is almost free: the question becomes an embedding, and the graph finds the nearest things and links and returns a short context without calling a language model. The agent passes the keywords for the graph search itself. You pay once to build and read many times for next to nothing.",
+      "bid": "gk010"
+    },
+    {
+      "kind": "block-section-head",
+      "id": "spaces",
+      "title": "Whose graph it is",
+      "bid": "gsp01"
+    },
+    {
+      "kind": "block-access-map",
+      "outer": {
+        "title": "The main agent of the node",
+        "text": "Asks every graph space of every element and sees whose each answer is."
+      },
+      "spaces": [
+        {
+          "title": "Mom's element",
+          "text": "Her facts and links in her element's own space."
+        },
+        {
+          "title": "Son's element",
+          "text": "His own spaces, opened only with his element's key."
+        },
+        {
+          "title": "Your site",
+          "text": "Its own spaces, its own answers."
+        }
+      ],
+      "between": "Each element opens the graph with its own key, and one space never sees the points and roads of another.",
+      "bid": "gsp02"
+    },
+    {
+      "kind": "text-p",
+      "text": "An element works only in its own spaces: el-<its id>, and el-<its id>.<name> for one it names. The deep memory keeps each element's facts the same way. The shared graph with the skills base and the studied products is never reached with an element's key.",
+      "bid": "gsp03"
+    },
+    {
+      "kind": "text-p",
+      "text": "A question of an element goes to its own space. The main agent, with the node's data key, asks every space and sees whose each answer is.",
+      "bid": "gsp04"
+    },
+    {
+      "kind": "text-p",
+      "text": "The graph keeps the doors apart, not the disk: every space lies in this element's folder on your computer, and all elements run as one user of it.",
+      "bid": "gsp05"
+    },
+    {
+      "kind": "block-section-head",
+      "id": "your-computer",
+      "title": "Your graph on your computer",
+      "bid": "gk011"
+    },
+    {
+      "kind": "text-p",
+      "text": "The graph runs inside the node on your computer, and its data sits in the node's folder. Each element reads and adds to its own spaces through the graph's doors with its own key; the core and the deep memory use the node's data key. When you need to, you can connect your own tools to the same doors.",
+      "bid": "gk012"
+    },
+    {
+      "kind": "block-cards",
+      "title": "Where the graph helps",
+      "cols": 3,
+      "blockKey": "uses",
+      "children": [
+        {
+          "kind": "block-card",
+          "children": [
+            {
+              "kind": "text-h3",
+              "text": "Studying other products"
+            },
+            {
+              "kind": "text-p",
+              "text": "An agent works out how a feature of someone else's site is built and writes into the graph the site, the feature, the requests behind it and the quiz item that grew out of it. The finding does not vanish with the conversation."
+            }
+          ]
+        },
+        {
+          "kind": "block-card",
+          "children": [
+            {
+              "kind": "text-h3",
+              "text": "Large collections of knowledge"
+            },
+            {
+              "kind": "text-p",
+              "text": "Collections of skills, MCP servers and any set where it matters not only what is in it but how one thing relates to another. The graph keeps them in order and finds what you need by meaning."
+            }
+          ]
+        },
+        {
+          "kind": "block-card",
+          "children": [
+            {
+              "kind": "text-h3",
+              "text": "The memory of all the node's agents"
+            },
+            {
+              "kind": "text-p",
+              "text": "Everything that happened in the agents' lives in one place: what happened and when, which element, node and partner it involves, which event was the cause and which the effect. Together it gives the whole picture of your project."
+            }
+          ]
+        }
+      ],
+      "bid": "gk013"
+    },
+    {
+      "kind": "block-section-head",
+      "id": "connect",
+      "title": "Connect your element",
+      "bid": "gsc01"
+    },
+    {
+      "kind": "text-p",
+      "text": "Every element of the node already has its own key. Store what you learned as a ready graph and find it again with your own keywords:",
+      "bid": "gsc02"
+    },
+    {
+      "kind": "text-code",
+      "text": "// The graph's port: ask the node (npm run a2a -- card graph), never write the number into code.\nconst base = 'http://127.0.0.1:24689'\nconst headers = { 'content-type': 'application/json', 'X-Element-Key': process.env.ELEMENT_KEY }\n// Store what you learned. Every entity and link names, by source_id, a fragment of the same call.\nawait fetch(`${base}/api/graph-insert`, { method: 'POST', headers, body: JSON.stringify({\n  chunks: [{ content: 'The page /pricing takes payment through Stripe Checkout.', source_id: 'review-42' }],\n  entities: [\n    { entity_name: 'Pricing page', entity_type: 'page', description: 'The page /pricing of example.com.', source_id: 'review-42' },\n    { entity_name: 'Stripe Checkout', entity_type: 'library', description: 'The hosted payment page of Stripe.', source_id: 'review-42' },\n  ],\n  relationships: [\n    { src_id: 'Pricing page', tgt_id: 'Stripe Checkout', description: 'The pricing page takes payment through Stripe Checkout.',\n      keywords: 'payment, checkout', source_id: 'review-42' },\n  ],\n}) })\n// Find it again with your own keywords: ll_keywords look for entities, hl_keywords for links.\nconst answer = await fetch(`${base}/api/graph-query`, { method: 'POST', headers, body: JSON.stringify({\n  query: 'How does the site take payments?', mode: 'mix', ll_keywords: ['payment page'], hl_keywords: ['payments'],\n}) }).then((r) => r.json())",
+      "bid": "gsc03"
+    },
+    {
+      "kind": "text-p",
+      "text": "The answer brings the entities, the links and the fragments they came from; when nothing relevant is there it says found: false. Add \"space\": \"<name>\" to keep another graph of your own.",
+      "bid": "gsc04"
+    },
+    {
+      "kind": "block-section-head",
+      "id": "hood",
+      "title": "Under the hood",
+      "bid": "gsh01"
+    },
+    {
+      "kind": "text-table",
+      "head": [
+        "Part",
+        "What it does"
+      ],
+      "rows": [
+        [
+          "LightRAG 1.5.7",
+          "Lives inside the element: Python managed by uv, one pinned package, installed into the element's own folder"
+        ],
+        [
+          "One operation per call",
+          "Each call starts Python for one operation, about 2 seconds and 200 MB while it lasts, and runs take turns"
+        ],
+        [
+          "No language model",
+          "The caller brings the graph and the keywords; the vectors are counted by the node's embeddings element, 384 numbers, no key"
+        ],
+        [
+          "Spaces",
+          "space: \"<name>\" keeps a graph of its own in its own folder, and the shared graph never sees it"
+        ],
+        [
+          "Origin",
+          "Knowledge of a studied product is marked external-study, so an agent never takes it for this node's code"
+        ],
+        [
+          "The lock",
+          "Each element's own key in X-Element-Key opens its own spaces; the node's data key in X-Data-Secret opens all; the page «Knowledge graph» shows the architect its size and a search"
+        ]
+      ],
+      "bid": "gsh02"
+    },
+    {
+      "kind": "block-section-head",
+      "id": "builder",
+      "title": "Your own builder comes with it",
+      "bid": "q0007"
+    },
+    {
+      "kind": "text-p",
+      "text": "Every element of the node comes with its own Claude Code agent and can get its own Telegram bot. When something in this element should change, write to its bot from your phone, and the agent updates the logic or the design.",
+      "bid": "q0008"
+    },
+    {
+      "kind": "text-p",
+      "text": "The agent works only in its element's folder and never reads the whole node, so each change costs fewer tokens. Your Claude Code subscription pays for it.",
+      "bid": "q0009"
+    },
+    {
+      "kind": "text-list",
+      "items": [
+        "The element's bot is connected in the core, on its «Telegram» page.",
+        "The agent returns a commit; you look at it in «Preview» and accept it or turn it down.",
+        "At the computer, the agent's terminal is in the core, in this element's «Build»."
+      ],
+      "bid": "q000a"
+    },
+    {
+      "kind": "block-section-head",
+      "id": "credits",
+      "title": "Open source",
+      "bid": "gsx01"
+    },
+    {
+      "kind": "text-p",
+      "text": "Built by Fractera for the [Lagrix](https://lagrix.dev) protocol and for any web2 project whose agents need a shared memory. MIT license, the code is at [github.com/Fractera/fractera-graph-lightrag-starter](https://github.com/Fractera/fractera-graph-lightrag-starter).",
+      "bid": "gxp01"
+    },
+    {
+      "kind": "block-section-head",
+      "id": "faq",
+      "title": "Questions and answers",
+      "bid": "gsf01"
+    },
+    {
+      "kind": "block-faq",
+      "title": "Questions and answers",
+      "items": [
+        {
+          "q": "Do I need to install anything?",
+          "a": "No. The element installs Python and LightRAG into its own folder, and nothing goes into the system."
+        },
+        {
+          "q": "Where is the data kept?",
+          "a": "In the node's folder on your computer. The graph lives in the memory of its process, and the files on disk are its copy."
+        },
+        {
+          "q": "Can I connect to the graph from outside?",
+          "a": "Yes. Today the node's elements use the graph through its doors with the node's key. You can connect your own tools to the same doors."
+        },
+        {
+          "q": "What is LightRAG?",
+          "a": "An open-source library for search over a knowledge graph, from the LightRAG Team under the MIT license. The node's graph is built on it."
+        },
+        {
+          "q": "What if the graph gets very large?",
+          "a": "The built-in storage is enough for the knowledge of one node. A graph of millions of things needs a database server, and this element does not set one up."
+        },
+        {
+          "q": "Can I keep backups?",
+          "a": "Yes. The element is ready for its programmer agent to set up backups on a schedule or by hand: tell the element's agent in Telegram or in the terminal. It makes no copies on its own until you ask."
+        }
+      ],
+      "bid": "gk015"
+    }
   ]
 }
