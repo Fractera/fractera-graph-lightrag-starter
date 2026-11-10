@@ -89,5 +89,5 @@
       }
     }
   ],
-  "docs": "npx shadcn add @fractera/block-flow. In a page: { \"kind\": \"block-flow\", \"title\": \"…\", \"steps\": [ three { \"title\", \"text\" } ] }. Styles .flow* come with the theme."
+  "docs": "In a page: { \"kind\": \"block-flow\", \"title\": \"…\", \"steps\": [ three { \"title\", \"text\" } ] }. Styles .flow* come with the theme."
 }

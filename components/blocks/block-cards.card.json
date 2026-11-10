@@ -119,5 +119,5 @@
       }
     }
   ],
-  "docs": "npx shadcn add @fractera/block-cards (brings block-card). In a page: { \"kind\": \"block-cards\", \"title\": \"…\", \"cols\": 3, \"children\": [ { \"kind\": \"block-card\", \"children\": [ text blocks ] } ] }."
+  "docs": "In a page: { \"kind\": \"block-cards\", \"title\": \"…\", \"cols\": 3, \"children\": [ { \"kind\": \"block-card\", \"children\": [ text blocks ] } ] }."
 }

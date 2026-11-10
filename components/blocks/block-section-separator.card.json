@@ -51,5 +51,5 @@
       "props": {}
     }
   ],
-  "docs": "npx shadcn add @fractera/block-section-separator. In a page: { \"kind\": \"block-section-separator\" }."
+  "docs": "In a page: { \"kind\": \"block-section-separator\" }."
 }

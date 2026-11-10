@@ -100,5 +100,5 @@
       }
     }
   ],
-  "docs": "npx shadcn add @fractera/block-metrics. In a page: { \"kind\": \"block-metrics\", \"items\": [ { \"value\": \"82\", \"label\": \"…\" }, … three items ] }. The value is not translated; the label is a page string."
+  "docs": "In a page: { \"kind\": \"block-metrics\", \"items\": [ { \"value\": \"82\", \"label\": \"…\" }, … three items ] }. The value is not translated; the label is a page string."
 }
