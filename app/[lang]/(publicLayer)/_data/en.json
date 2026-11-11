@@ -2,13 +2,13 @@
   "title": "The node's knowledge graph: agent memory on LightRAG",
   "description": "The node's agents keep what they learn and find it again by meaning. Knowledge outlives the conversation, and an agent reads a short extract instead of whole files.",
   "keywords": "knowledge graph, LightRAG, agent memory, graph RAG, Fractera node",
-  "blocks": [
+  "body": [
     {
       "kind": "widget-static-graph-landing",
       "bid": "gwl01"
     },
     {
-      "kind": "block-hero-centered",
+      "kind": "section-hero-centered",
       "pill": "Knowledge graph · LightRAG",
       "title": "Your agents stop forgetting what they learned",
       "description": "The graph keeps the knowledge of every element of your node: what was studied, how it connects and where it came from. Any agent finds what it needs with one question instead of rereading old files and conversations.",
@@ -23,7 +23,7 @@
       "bid": "gk001"
     },
     {
-      "kind": "block-section-head",
+      "kind": "section-head",
       "id": "route",
       "title": "How it works",
       "bid": "gsr01"
@@ -64,7 +64,7 @@
       "bid": "grs01"
     },
     {
-      "kind": "block-section-head",
+      "kind": "section-head",
       "id": "power",
       "title": "On, asleep only when memory is short",
       "bid": "q0000"
@@ -75,7 +75,7 @@
       "bid": "q0001"
     },
     {
-      "kind": "block-section-head",
+      "kind": "section-head",
       "id": "pain",
       "title": "Without a shared memory every conversation starts from zero",
       "bid": "gk002"
@@ -86,7 +86,7 @@
       "bid": "gk003"
     },
     {
-      "kind": "block-section-head",
+      "kind": "section-head",
       "id": "solves",
       "title": "What changes for you",
       "bid": "gss01"
@@ -118,7 +118,7 @@
       "bid": "gst01"
     },
     {
-      "kind": "block-section-head",
+      "kind": "section-head",
       "id": "what-is-a-graph",
       "title": "What a knowledge graph is",
       "bid": "gk005"
@@ -129,7 +129,7 @@
       "bid": "gk006"
     },
     {
-      "kind": "block-section-head",
+      "kind": "section-head",
       "id": "heart",
       "title": "The heart of LightRAG",
       "bid": "q0002"
@@ -150,7 +150,7 @@
       "bid": "q0005"
     },
     {
-      "kind": "block-flow",
+      "kind": "section-flow",
       "title": "How a search goes through the graph",
       "steps": [
         {
@@ -169,13 +169,13 @@
       "bid": "q0006"
     },
     {
-      "kind": "block-section-head",
+      "kind": "section-head",
       "id": "cost",
       "title": "Where the tokens go",
       "bid": "gk008"
     },
     {
-      "kind": "block-metrics",
+      "kind": "section-metrics",
       "items": [
         {
           "value": "Once",
@@ -198,13 +198,13 @@
       "bid": "gk010"
     },
     {
-      "kind": "block-section-head",
+      "kind": "section-head",
       "id": "spaces",
       "title": "Whose graph it is",
       "bid": "gsp01"
     },
     {
-      "kind": "block-access-map",
+      "kind": "section-access-map",
       "outer": {
         "title": "The main agent of the node",
         "text": "Asks every graph space of every element and sees whose each answer is."
@@ -242,7 +242,7 @@
       "bid": "gsp05"
     },
     {
-      "kind": "block-section-head",
+      "kind": "section-head",
       "id": "your-computer",
       "title": "Your graph on your computer",
       "bid": "gk011"
@@ -253,13 +253,13 @@
       "bid": "gk012"
     },
     {
-      "kind": "block-cards",
+      "kind": "section-cards",
       "title": "Where the graph helps",
       "cols": 3,
-      "blockKey": "uses",
+      "itemKey": "uses",
       "children": [
         {
-          "kind": "block-card",
+          "kind": "section-card",
           "children": [
             {
               "kind": "text-h3",
@@ -272,7 +272,7 @@
           ]
         },
         {
-          "kind": "block-card",
+          "kind": "section-card",
           "children": [
             {
               "kind": "text-h3",
@@ -285,7 +285,7 @@
           ]
         },
         {
-          "kind": "block-card",
+          "kind": "section-card",
           "children": [
             {
               "kind": "text-h3",
@@ -301,7 +301,7 @@
       "bid": "gk013"
     },
     {
-      "kind": "block-section-head",
+      "kind": "section-head",
       "id": "connect",
       "title": "Connect your element",
       "bid": "gsc01"
@@ -322,7 +322,7 @@
       "bid": "gsc04"
     },
     {
-      "kind": "block-section-head",
+      "kind": "section-head",
       "id": "hood",
       "title": "Under the hood",
       "bid": "gsh01"
@@ -362,7 +362,7 @@
       "bid": "gsh02"
     },
     {
-      "kind": "block-section-head",
+      "kind": "section-head",
       "id": "builder",
       "title": "Your own builder comes with it",
       "bid": "q0007"
@@ -387,7 +387,7 @@
       "bid": "q000a"
     },
     {
-      "kind": "block-section-head",
+      "kind": "section-head",
       "id": "credits",
       "title": "Open source",
       "bid": "gsx01"
@@ -398,13 +398,13 @@
       "bid": "gxp01"
     },
     {
-      "kind": "block-section-head",
+      "kind": "section-head",
       "id": "faq",
       "title": "Questions and answers",
       "bid": "gsf01"
     },
     {
-      "kind": "block-faq",
+      "kind": "section-faq",
       "title": "Questions and answers",
       "items": [
         {

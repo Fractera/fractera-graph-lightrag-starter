@@ -2,13 +2,13 @@
   "title": "Граф знаний узла: память агентов на LightRAG",
   "description": "Агенты узла сохраняют то, что узнали, и находят это снова по смыслу. Знание переживает разговор, а агент читает короткую выжимку вместо целых файлов.",
   "keywords": "граф знаний, LightRAG, память агентов, graph RAG, узел Fractera",
-  "blocks": [
+  "body": [
     {
       "kind": "widget-static-graph-landing",
       "bid": "gwl01"
     },
     {
-      "kind": "block-hero-centered",
+      "kind": "section-hero-centered",
       "pill": "Граф знаний · LightRAG",
       "title": "Ваши агенты больше не забывают, что узнали",
       "description": "Граф хранит знания всех элементов узла: что изучено, как это связано и откуда известно. Любой агент находит нужное одним вопросом и не перечитывает старые файлы и разговоры.",
@@ -23,7 +23,7 @@
       "bid": "gk001"
     },
     {
-      "kind": "block-section-head",
+      "kind": "section-head",
       "id": "route",
       "title": "Как это работает",
       "bid": "gsr01"
@@ -64,7 +64,7 @@
       "bid": "grs01"
     },
     {
-      "kind": "block-section-head",
+      "kind": "section-head",
       "id": "power",
       "title": "Включён, засыпает только при нехватке памяти",
       "bid": "q0000"
@@ -75,7 +75,7 @@
       "bid": "q0001"
     },
     {
-      "kind": "block-section-head",
+      "kind": "section-head",
       "id": "pain",
       "title": "Без общей памяти каждый разговор начинается с нуля",
       "bid": "gk002"
@@ -86,7 +86,7 @@
       "bid": "gk003"
     },
     {
-      "kind": "block-section-head",
+      "kind": "section-head",
       "id": "solves",
       "title": "Что меняется для вас",
       "bid": "gss01"
@@ -118,7 +118,7 @@
       "bid": "gst01"
     },
     {
-      "kind": "block-section-head",
+      "kind": "section-head",
       "id": "what-is-a-graph",
       "title": "Что такое граф знаний",
       "bid": "gk005"
@@ -129,7 +129,7 @@
       "bid": "gk006"
     },
     {
-      "kind": "block-section-head",
+      "kind": "section-head",
       "id": "heart",
       "title": "Сердце LightRAG",
       "bid": "q0002"
@@ -150,7 +150,7 @@
       "bid": "q0005"
     },
     {
-      "kind": "block-flow",
+      "kind": "section-flow",
       "title": "Как идёт поиск по графу",
       "steps": [
         {
@@ -169,13 +169,13 @@
       "bid": "q0006"
     },
     {
-      "kind": "block-section-head",
+      "kind": "section-head",
       "id": "cost",
       "title": "Где тратятся токены",
       "bid": "gk008"
     },
     {
-      "kind": "block-metrics",
+      "kind": "section-metrics",
       "items": [
         {
           "value": "1 раз",
@@ -198,13 +198,13 @@
       "bid": "gk010"
     },
     {
-      "kind": "block-section-head",
+      "kind": "section-head",
       "id": "spaces",
       "title": "Чей это граф",
       "bid": "gsp01"
     },
     {
-      "kind": "block-access-map",
+      "kind": "section-access-map",
       "outer": {
         "title": "Главный агент узла",
         "text": "Спрашивает каждое пространство графа каждого элемента и видит, чей каждый ответ."
@@ -242,7 +242,7 @@
       "bid": "gsp05"
     },
     {
-      "kind": "block-section-head",
+      "kind": "section-head",
       "id": "your-computer",
       "title": "Ваш граф на вашем компьютере",
       "bid": "gk011"
@@ -253,13 +253,13 @@
       "bid": "gk012"
     },
     {
-      "kind": "block-cards",
+      "kind": "section-cards",
       "title": "Где пригодится граф",
       "cols": 3,
-      "blockKey": "uses",
+      "itemKey": "uses",
       "children": [
         {
-          "kind": "block-card",
+          "kind": "section-card",
           "children": [
             {
               "kind": "text-h3",
@@ -272,7 +272,7 @@
           ]
         },
         {
-          "kind": "block-card",
+          "kind": "section-card",
           "children": [
             {
               "kind": "text-h3",
@@ -285,7 +285,7 @@
           ]
         },
         {
-          "kind": "block-card",
+          "kind": "section-card",
           "children": [
             {
               "kind": "text-h3",
@@ -301,7 +301,7 @@
       "bid": "gk013"
     },
     {
-      "kind": "block-section-head",
+      "kind": "section-head",
       "id": "connect",
       "title": "Подключите свой элемент",
       "bid": "gsc01"
@@ -322,7 +322,7 @@
       "bid": "gsc04"
     },
     {
-      "kind": "block-section-head",
+      "kind": "section-head",
       "id": "hood",
       "title": "Что под капотом",
       "bid": "gsh01"
@@ -362,7 +362,7 @@
       "bid": "gsh02"
     },
     {
-      "kind": "block-section-head",
+      "kind": "section-head",
       "id": "builder",
       "title": "Свой строитель в комплекте",
       "bid": "q0007"
@@ -387,7 +387,7 @@
       "bid": "q000a"
     },
     {
-      "kind": "block-section-head",
+      "kind": "section-head",
       "id": "credits",
       "title": "Открытый код",
       "bid": "gsx01"
@@ -398,13 +398,13 @@
       "bid": "gxp01"
     },
     {
-      "kind": "block-section-head",
+      "kind": "section-head",
       "id": "faq",
       "title": "Вопросы и ответы",
       "bid": "gsf01"
     },
     {
-      "kind": "block-faq",
+      "kind": "section-faq",
       "title": "Вопросы и ответы",
       "items": [
         {

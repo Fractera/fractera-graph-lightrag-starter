@@ -2,8 +2,8 @@
 
 The node's shared knowledge graph on LightRAG: elements store what they learn and ask it later. Since **v1.0.0** (node step 549-4)
 this element is built on the Fractera native element template (before: a copy of the custom element roman). Its own content is the
-home page approved by the owner on 2026-10-19 (`app/[lang]/(publicLayer)/_data/`, 14 blocks in en and ru) and the blocks it needs —
-`block-cards`, `block-card`, `block-flow`, `block-metrics`, `block-section-separator` (from the node blocks). Since **v1.1.6** LightRAG itself
+home page approved by the owner on 2026-10-19 (`app/[lang]/(publicLayer)/_data/`, 14 sections in en and ru) and the sections it needs —
+`section-cards`, `section-card`, `section-flow`, `section-metrics`, `section-separator` (its own sections). Since **v1.1.6** LightRAG itself
 lives inside the element (Python managed by uv, one operation per call); how to use it — the section «Using the graph» below.
 
 ---
